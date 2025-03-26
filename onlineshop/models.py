@@ -59,11 +59,6 @@ class Products(models.Model):
         return products
     
 
-class Orders(models.Model):
-
-    product = models.ForeignKey(Products, on_delete=models.CASCADE)
-
-
 class Customers(models.Model):
     Name = models.CharField(max_length=255)
     Email = models.EmailField(unique=True, blank=False, null=False)
@@ -76,6 +71,18 @@ class Customers(models.Model):
     def delete_customers(self):
         self.delete()
 
+class Orders(models.Model):
+    Totalprice = models.DecimalField(max_digits=10, decimal_places=2)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customers, on_delete=models.CASCADE)
+
+    def save_orders(self):
+        self.save()
+    
+    def delete_orders(self):
+        self.delete()
+
+        
 class Reviews(models.Model):
     
     Comment = models.CharField(max_length=1000)
