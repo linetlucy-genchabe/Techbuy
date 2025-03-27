@@ -1,41 +1,44 @@
-
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
 
+<section class="organic-section">
+    <div class="container text-center">
+        <h1 class="organic-title">A1 Products here at TechBuy</h1>
 
+        <div class="row justify-content-center">
+            <!-- All In oNes -->
+            <div class="col-md-4">
+                <div class="product-card">
+                    <img src="{% static 'images/desktop.png' %}" alt="All in Ones">
+                </div>
+                <h3 class="product-title">All In One(s)</h3>
+                <p class="product-description">Avoid the Hustle of Slow CPUs.</p>
+            </div>
 
+            <!-- Organic Soaps -->
+            <div class="col-md-4">
+                <div class="product-card">
+                    <img src="{% static 'images/laptop.png' %}" alt="Laptops">
+                </div>
+                <h3 class="product-title">Laptops</h3>
+                <p class="product-description">High quality and different Brands.</p>
+            </div>
 
-<h1 style="background-color: #A6603A; color:#DEC59B;"> Techbuy</h1>
-<p>the font is</p>
-<div class="container p-4 mx-auto">
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    <div class="col">
-      <div class="card h-100">
-        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill"/>
-        
-      </div>
+            <!-- Soy Candles -->
+            <div class="col-md-4">
+                <div class="product-card">
+                    <img src="{% static 'images/keys.png' %}" alt="Key Boards">
+                </div>
+                <h3 class="product-title">Key Boards</h3>
+                <p class="product-description">Type as first as myself.</p>
+            </div>
+        </div>
     </div>
-    <div class="col">
-      <div class="card h-100">
-        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/042.webp" class="card-img-top" alt="Palm Springs Road"/>
-        
-      </div>
-    </div>
-    <div class="col">
-      <div class="card h-100">
-        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/043.webp" class="card-img-top" alt="Los Angeles Skyscrapers"/>
-        
-      </div>
-    </div>
-    <div class="col">
-      <div class="card h-100">
-        <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp" class="card-img-top" alt="Skyscrapers"/>
-        
-      </div>
-    </div>
-  </div>
-</div>
+</section>
 
+<style>
+    
+</style>
 
 {% endblock content %}
