@@ -14,3 +14,9 @@ def products(request):
     products = Products.objects.all
     
     return render(request, 'public/products.html', {'products':products})
+
+
+
+def contact_us(request):
+    
+    return render(request, 'public/contact_us.html')
