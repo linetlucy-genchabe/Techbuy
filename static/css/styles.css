@@ -21,3 +21,44 @@
     opacity: 1;
     position: relative;
 }
+
+.brand-story {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background-color: #f8ecc2;
+}
+
+/* Image Styling */
+.image-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Text Styling */
+.text-container {
+    flex: 1;
+    max-width: 500px;
+    padding: 20px;
+    background-color: #faeec9; /* Light cream */
+}
+
+.text-container h2 {
+    font-size: 28px;
+    color: #a15b32; /* Brown tone */
+    margin-bottom: 10px;
+}
+
+.text-container p {
+    font-size: 18px;
+    color: #5c3b24;
+    line-height: 1.6;
+}
