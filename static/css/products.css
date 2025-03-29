@@ -59,3 +59,13 @@
   background-color: #DEC59B;
   color: black;
 }
+
+.add-to-cart{
+  background-color: #a16a3a;
+  color: #ffffff;
+  font-weight: 700;
+}
+.add-to-cart:hover{
+  background-color: #a16a3a;
+  font-weight: 700;
+}
