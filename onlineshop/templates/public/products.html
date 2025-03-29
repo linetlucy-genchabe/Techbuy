@@ -9,12 +9,33 @@
         <div class="row justify-content-center">
             <!-- All In oNes -->
             <div class="col-md-4">
-                <div class="product-card">
+                <div class="product-card" data-mdb-modal-init data-mdb-target="#exampleModal">
                     <img src="{% static 'images/desktop.png' %}" alt="All in Ones">
                 </div>
                 <h3 class="product-title">All In One(s)</h3>
                 <p class="product-description">Avoid the Hustle of Slow CPUs.</p>
             </div>
+
+    
+  
+  <!-- Modal -->
+  <div class="modal top fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog modal-lg  modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Product Name</h5>
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">...</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="modal-close" data-mdb-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" id="add-btn">Add To Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
             <!-- Organic Soaps -->
             <div class="col-md-4">

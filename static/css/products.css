@@ -39,3 +39,12 @@
   font-size: 1rem;
 }
 
+#add-btn{
+  background-color: #a16a3a !important;
+  font-weight: 700;
+
+}
+#modal-close{
+  background-color: #DEC59B;
+  color: black;
+}
