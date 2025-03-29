@@ -1,32 +1,68 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <div class="container-fluid contact">
-    <div class="container">
-        <h1>Get in Touch</h1>
-    <section class="contact-section">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card contact-img">
-                    <img src="https://img.freepik.com/free-vector/social-media-manager-concept-illustration_114360-21811.jpg?t=st=1743098322~exp=1743101922~hmac=f3eb5de1e345da96e763754c370633ea564e2c047fdf22af0b550d7d54bc6906&w=740" alt="Contact">
-                </div>
-            </div>
-            <div class="col-md-6 info">
-                <div class="address mb-3">
-                    <h4>Mailing Address</h4>
-                    <p>123 Anywhere St..,Any City, State, Country +254</p>
-                </div>
-                <div class="mail mb-3">
-                    <h4>Email Address</h4>
-                    <p>techbuy254@gmail.com</p>
-                </div>
-                <div class="mobile mb-3">
-                    <h4>Phone Number</h4>
-                    <p>+254 723987838, +254</p>
+<div class="container-fluid contact">
+    <section>
+        <div class="container py-5 contact">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col">
+                    <div class="card my-4 shadow-3">
+                        <div class="row g-0">
+                            <div class="col-xl-6 d-xl-block bg-image">
+                                <img src="{% static 'images/contact2.png' %}" class="img-fluid" />
+                                <div class="mask" style="background-color: rgba(0, 0, 0, 0.6)">
+                                    <div class=" justify-content-center align-items-center h-100">
+                                        <div class=" text-center" style="margin-top: 220px;">
+                                            <i class="fas fa-truck text-white fa-3x"></i>
+                                            <p class="text-white title-style">We Do delivery</p>
+                                            <p class="text-white mb-0"></p>
+
+                                            <figure class="text-center mb-0">
+                                                <blockquote class="blockquote text-white">
+                                                    <p class="pb-3">
+                                                        <i class="fas fa-quote-left fa-xs" style="color: #efe4b7;"></i>
+                                                        <span class="lead font-italic">Everything at your
+                                                            doorstep.</span>
+                                                        <i class="fas fa-quote-right fa-xs" style="color: #efe4b7;"></i>
+                                                    </p>
+                                                </blockquote>
+                                            </figure>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="card-body p-md-5 contact-details">
+                                    <h3 class="mb-4 text-uppercase">Where to find us...</h3>
+
+                                    <div class="row">
+                                        <div class="col-md-12 mb-4">
+                                            <h4>Mailing Address</h4>
+                                            <p>123 Anywhere St..,Any City, State, Country +254</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 mb-4">
+                                            <h4>Email Address</h4>
+                                            <p>techbuy254@gmail.com</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 mb-4">
+                                            <h4>Phone Number</h4>
+                                            <p>+254 723987838, +254</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-    </div>
+</div>
 </div>
 {% endblock content %}
