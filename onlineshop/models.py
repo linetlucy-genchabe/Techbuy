@@ -47,7 +47,7 @@ class Products(models.Model):
     Name = models.CharField(max_length=255)
     Description = models.TextField()
     Price = models.DecimalField(max_digits=10, decimal_places=2)
-    Pic = models.ImageField(upload_to= "/product_images", )
+    Pic = models.ImageField(upload_to= "product_images/")
     product_category = models.ForeignKey(Category, on_delete=models.CASCADE)
     product_brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
     stock = models.PositiveIntegerField(default=0)
