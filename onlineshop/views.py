@@ -32,22 +32,24 @@ def add_products(request):
             name = request.POST.get('name')
             pic = request.FILES.get('pic')
             description = request.POST.get('description')
-            category_id = request.POST.get('category')
+            product_category_id = request.POST.get('category')
             price = request.POST.get('price')
-            product_brand = request.POST.get('brand')
-            stock = request.POST.get('brand')
+            product_brand_id = request.POST.get('brand')
+            # stock = request.POST.get('brand')
         
             # Ensure category exists
-            category_instance = Category.objects.filter(id=category_id).first()
-            product_instance = Brand.objects.filter(id=product_brand).first()
+            category_instance = Category.objects.filter(id=product_category_id).first()
+            print("category is:", category_instance)
+            product_instance = Brand.objects.filter(id=product_brand_id).first()
+
 
             if category_instance:
-                products = Category(
+                products = Products(
                     
                     pic=pic,
                     description=description,
                     name=name,
-                    category=category_instance,
+                    product_category=category_instance,
                     product_brand=product_instance,
                     price=price,
                     
@@ -58,7 +60,7 @@ def add_products(request):
                 return redirect('products')
 
             else:
-                print("⚠️ Invalid Category:", category_id)
+                print("⚠️ Invalid Category:", product_category_id)
     
     return render(request, 'public/add_products.html', {'categories':categories, 'brands':brands})
 
