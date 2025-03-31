@@ -44,10 +44,10 @@ class Brand(models.Model):
     # logo = models.ImageField(upload_to='brands/', blank=True, null=True)
 
 class Products(models.Model):
-    Name = models.CharField(max_length=255)
-    Description = models.TextField()
-    Price = models.DecimalField(max_digits=10, decimal_places=2)
-    Pic = models.ImageField(upload_to= "product_images/")
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    pic = models.ImageField(upload_to= "product_images/")
     product_category = models.ForeignKey(Category, on_delete=models.CASCADE)
     product_brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
     stock = models.PositiveIntegerField(default=0)
