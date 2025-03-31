@@ -5,72 +5,95 @@
 <section class="organic-section">
     <div class="container text-center">
         <h1 class="organic-title">A1 Products here at TechBuy</h1>
-        <a href="{% url 'add_products' %}" class="btn px-3 me-2" id="login-link"><button class="btn btn-style btn-primary me-lg-3" type="submit">Add Machinery</button></a>
+        <a href="{% url 'add_products' %}" class="btn px-3 me-2" id="login-link"><button
+                class="btn btn-style btn-primary me-lg-3" type="submit">Add Product</button></a>
 
         <div class="row justify-content-center">
             <!-- All In oNes -->
+            <!-- {% for product in products %}
             <div class="col-md-4">
                 <div class="product-card" data-mdb-modal-init data-mdb-target="#exampleModal">
-                    <img src="{% static 'images/desktop.png' %}" alt="All in Ones">
+                    <img src="{{product.pic.url}}" alt="Product Image">
                 </div>
-                <h3 class="product-title">All In One(s)</h3>
-                <p class="product-description">Avoid the Hustle of Slow CPUs.</p>
+                <h3 class="product-title">{{product.name}}</h3>
+                <p class="product-description">{{product.description}}</p>
             </div>
+            {% endfor %} -->
+            {% for product in products %}
+            <div class="col-md-4">
+                <a href="{% url 'product_detail' product.id %}" class="text-decoration-none">
+                    <!-- Link to product detail page -->
+                    <div class="product-card">
+                        <!-- Removed modal attributes -->
+                        <img src="{{ product.pic.url }}" alt="{{ product.name }}" class="img-fluid">
+                    </div>
+                    <h3 class="product-title">{{ product.name }}</h3>
+                    <p class="product-description">{{ product.description }}</p>
+                </a>
+            </div>
+            {% endfor %}
 
-    
-  
-  <!-- Modal -->
-  <div class="modal top fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
-    <div class="modal-dialog modal-lg  modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Product Name</h5>
-          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-5 product-image">
-                <img src="{% static 'images/desktop.png' %}" alt="Product Image">
-                </div>
-                <div class="col-md-7">
-                    <div class="row mb-2">
-                        <div class="row">
-                            <div class="col-md-10"><h5>Product name Goes here</h5></div>
-                            <div class="col-md-2">
-                                <i class="fa-regular fa-heart wishlist-icon"></i>
+
+
+            <!-- Modal -->
+            <div class="modal top fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+                <div class="modal-dialog modal-lg  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">{{product.name}}</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-5 product-image">
+                                    <img src="{{product.pic.url}}" alt="Product Image">
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="row mb-2">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <h5>{{product.name}}</h5>
+                                            </div>
+                                            <p>{{product.description}}</p>
+                                            <div class="col-md-2">
+                                                <i class="fa-regular fa-heart wishlist-icon"></i>
+                                            </div>
+                                        </div>
+
+                                        <small>Brand/Model:<span>{Enter the product Brand here}</span></small>
+                                    </div>
+                                    <h3>KSH 90,000</h3>
+                                    <small class="text-success">In Stock</small>
+                                    <div class="rating mb-2">
+                                        <i class="fa-solid fa-star fa-1x text-warning"></i>
+                                        <i class="fa-solid fa-star text-warning"></i>
+                                        <i class="fa-solid fa-star text-warning"></i>
+                                        <i class="fa-solid fa-star text-secondary"></i>
+                                        <i class="fa-solid fa-star text-secondary"></i>(200 Verified ratings)
+
+                                    </div>
+                                    <div class="cart">
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-primary add-to-cart" type="button"
+                                                data-mdb-ripple-init><i class="fa-solid fa-cart-plus fa-1x"></i> Add to
+                                                Cart</button>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-                        
-                        <small>Brand/Model:<span>{Enter the product Brand here}</span></small>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="modal-close" data-mdb-dismiss="modal">
+                                Close
+                            </button>
+                            <!-- <button type="button" class="btn btn-primary" id="add-btn">Add To Cart</button> -->
+                        </div>
                     </div>
-                    <h3>KSH 90,000</h3>
-                    <small class="text-success">In Stock</small>
-                    <div class="rating mb-2">
-                        <i class="fa-solid fa-star fa-1x text-warning"></i>
-                        <i class="fa-solid fa-star text-warning"></i>
-                        <i class="fa-solid fa-star text-warning"></i>
-                        <i class="fa-solid fa-star text-secondary"></i>
-                        <i class="fa-solid fa-star text-secondary"></i>(200 Verified ratings)
-                        
-                    </div>
-                    <div class="cart">
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-primary add-to-cart" type="button" data-mdb-ripple-init><i class="fa-solid fa-cart-plus fa-1x"></i> Add to Cart</button>
-                          </div>
-                    </div>
-
                 </div>
             </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" id="modal-close" data-mdb-dismiss="modal">
-            Close
-          </button>
-          <!-- <button type="button" class="btn btn-primary" id="add-btn">Add To Cart</button> -->
-        </div>
-      </div>
-    </div>
-  </div>
 
             <!-- Organic Soaps -->
             <div class="col-md-4">
@@ -94,7 +117,7 @@
 </section>
 
 <style>
-    
+
 </style>
 
 {% endblock content %}
