@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %} 
 {% block content %}
 
 <main class="mt-5 pt-4">
@@ -26,9 +27,9 @@
 
                     <p class="lead">
                         <span class="me-1">
-                            <del>1500</del>
+                            <!-- <del>1500</del> -->
                         </span>
-                        <span class="fw-bold">{{product.price}}</span>
+                        <span class="fw-bold">{{product.price|currency_kes}}</span>
                     </p>
 
                     <strong><p style="font-size: 20px;">Description</p></strong>
