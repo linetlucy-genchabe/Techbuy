@@ -74,3 +74,22 @@
 .wishlist-icon{
   color: #a16a3a;
 }
+
+.badge-category{
+  background-color: #A65F39;
+
+}
+
+.badge-brand{
+  background-color:#C58856 ;
+
+}
+.badge-seller{
+  background-color: #544940;
+
+}
+.order-btn{
+  background-color: #544940;
+  color: #fff;
+  font-weight: 700;
+}
