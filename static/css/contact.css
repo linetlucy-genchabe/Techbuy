@@ -1,0 +1,20 @@
+.contact{
+    background-color: #efe4b7;
+    color: #a1714d;
+}
+
+.contact-img img{
+    height: 40vh;
+    object-fit: contain;
+    /* border-radius: 0; */
+}
+.contact-section{
+    padding: 20px;
+}
+.info{
+    padding: 40px;
+}
+.contact-details{
+    color: #a1714d !important;
+    background: none !important;
+}

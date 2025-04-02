@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="organic-section">
+    <div class="container text-center">
+        <h1 class="organic-title">A1 Products here at TechBuy</h1>
+
+        <div class="row justify-content-center">
+            <!-- All In oNes -->
+            <div class="col-md-4">
+                <div class="product-card" data-mdb-modal-init data-mdb-target="#exampleModal">
+                    <img src="{% static 'images/desktop.png' %}" alt="All in Ones">
+                </div>
+                <h3 class="product-title">All In One(s)</h3>
+                <p class="product-description">Avoid the Hustle of Slow CPUs.</p>
+            </div>
+
+    
+  
+  <!-- Modal -->
+  <div class="modal top fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog modal-lg  modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Product Name</h5>
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">...</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="modal-close" data-mdb-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" id="add-btn">Add To Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+            <!-- Organic Soaps -->
+            <div class="col-md-4">
+                <div class="product-card">
+                    <img src="{% static 'images/laptop.png' %}" alt="Laptops">
+                </div>
+                <h3 class="product-title">Laptops</h3>
+                <p class="product-description">High quality and different Brands.</p>
+            </div>
+
+            <!-- Soy Candles -->
+            <div class="col-md-4">
+                <div class="product-card">
+                    <img src="{% static 'images/keys.png' %}" alt="Key Boards">
+                </div>
+                <h3 class="product-title">Key Boards</h3>
+                <p class="product-description">Type as fast as myself.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    
+</style>
+
+{% endblock content %}
