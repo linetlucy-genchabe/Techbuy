@@ -8,7 +8,9 @@
 }
 
 .organic-section {
-  background-color: #a16a3a;; 
+  /* background-color: #a16a3a;  */
+  /* background-color: #db9248; */
+  background: linear-gradient(to right, #985214 0%, #db9248 100%);
   padding: 60px 0;
 }
 .organic-title {
