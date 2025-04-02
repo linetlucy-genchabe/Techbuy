@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %} 
+{% block content %}
+
+<main class="mt-5 pt-4">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <img src="{{product.pic.url}}" class="img-fluid" alt="" />
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <!--Content-->
+                <div class="p-4">
+                    <div class="mb-3">
+                        <a href="">
+                            <span class="badge me-1 p-2 badge-category">{{product.product_category}}</span>
+                        </a>
+                        <a href="">
+                            <span class="badge me-1 p-2 badge-brand">{{product.product_brand.name}}</span>
+                        </a>
+                        <a href="">
+                            <span class="badge me-1 p-2 badge-seller">Seller Here</span>
+                        </a>
+                    </div>
+
+                    <p class="lead">
+                        <span class="me-1">
+                            <!-- <del>1500</del> -->
+                        </span>
+                        <span class="fw-bold">{{product.price|currency_kes}}</span>
+                    </p>
+
+                    <strong><p style="font-size: 20px;">Description</p></strong>
+
+                    <p>{{product.description}}.</p>
+                    <small class="text-success">In Stock</small>
+            <div class="rating mb-2">
+                <i class="fa-solid fa-star fa-1x text-warning"></i>
+                <i class="fa-solid fa-star text-warning"></i>
+                <i class="fa-solid fa-star text-warning"></i>
+                <i class="fa-solid fa-star text-secondary"></i>
+                <i class="fa-solid fa-star text-secondary"></i>(200 Verified ratings)
+
+            </div>
+
+                    <form class="d-flex justify-content-left">
+                        <!-- Default input -->
+                        <!-- <div class="form-outline me-1" style="width: 100px;">
+                            <input type="number" value="1" class="form-control " />
+                        </div> -->
+                        <div class="form-outline me-1" data-mdb-input-init style="width: 100px;">
+                            <input type="number" id="typeNumber" class="form-control" value="1" />
+                            
+                          </div>
+                          <div class="cart">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary add-to-cart" type="button" data-mdb-ripple-init><i
+                            class="fa-solid fa-cart-plus fa-1x"></i> Add to
+                        Cart</button>
+                </div>
+            </div>
+                        <button class="btn order-btn ms-1" type="submit">
+                            Order Now!
+                            <!-- <i class="fas fa-shopping-cart ms-1"></i> -->
+                        </button>
+                    </form>
+                </div>
+                <!--Content-->
+            </div>
+            <!--Grid column-->
+        </div>
+        <!--Grid row-->
+
+        
+{% endblock content %}
