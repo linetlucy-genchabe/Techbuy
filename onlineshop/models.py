@@ -47,7 +47,7 @@ class Products(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    pic = models.ImageField(upload_to= "product_images/")
+    # pic = models.ImageField(upload_to= "product_images/")
     product_category = models.ForeignKey(Category, on_delete=models.CASCADE)
     product_brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
     stock = models.PositiveIntegerField(default=0)
@@ -64,6 +64,11 @@ class Products(models.Model):
     def get_allproducts(cls):
         products = cls.objects.all()
         return products
+    
+class ProductImage(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="images")
+    pic = models.ImageField(upload_to= "product_images/")
+    angle = models.CharField(max_length=50, blank=True, null=True) 
     
 
 class Customers(models.Model):

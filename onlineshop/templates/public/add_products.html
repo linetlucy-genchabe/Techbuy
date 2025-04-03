@@ -15,12 +15,12 @@ Add Product Details
                     {% csrf_token %}
                     <!-- Image field -->
                     <div class="row mb-3">
-                        <div class="mb-3 col-md-6">
+                       <!--  <div class="mb-3 col-md-6">
                             <div data-mdb-input-init class="form-outline name">
                             <input type="file" class="form-control" id="pic" name="pic" />
                             <label class="form-label" for="customFile">Product Image</label>
                         </div>
-                    </div>
+                    </div> -->
 
                         <!-- <div class="form-outline col data-mdb-input-init">
                             <label class="form-label" for="name">Product Name</label>
@@ -36,6 +36,12 @@ Add Product Details
             
                             </div>
                         
+                            <div class="col-md-6">
+                                <div data-mdb-input-init class="form-outline name">
+                                  <input type="text" class="form-control" id="price" name="price" />
+                                  <label for="price" class="form-label">Product Price</label>
+                                </div>
+                              </div>
                     </div>
 
                     <div class="row mb-4">
@@ -70,20 +76,25 @@ Add Product Details
                     </div>
 
                     <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div data-mdb-input-init class="form-outline name">
-                              <input type="text" class="form-control" id="price" name="price" />
-                              <label for="price" class="form-label">Product Price</label>
+                         <div class="mb-3 col-md-6">
+                            <label class="form-label">Upload Product Images</label>
+                            <input type="file" name="images" class="form-control" multiple required>
+
+                            <!-- <div data-mdb-input-init class="form-outline name">
+                            <input type="file" class="form-control" id="pic" name="pic"  multiple required/>
+                            <label class="form-label" for="customFile">Product Image</label> -->
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="form-outline" data-mdb-input-init>
+                                <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                                <label class="form-label" for="textAreaExample">Product Description</label>
                             </div>
-                          </div>
+                        </div>
+                        
 
                     </div>
-                    <div class="row mb-3">
-                        <div class="form-outline" data-mdb-input-init>
-                            <textarea class="form-control" id="description" name="description" rows="4"></textarea>
-                            <label class="form-label" for="textAreaExample">Product Description</label>
-                        </div>
-                    </div>
+                    
 
                     <!-- Submit button -->
                     <button type="submit" class="btn btn-primary btn-block">Add Product Details</button>
