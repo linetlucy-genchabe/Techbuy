@@ -80,14 +80,12 @@ def single_product(request, product_id):
     product = Products.objects.get(id=product_id)
     current_user = request.user
     # user = User.objects.get(username=current_user.username)
-   
-
     return render(request, 'public/product_detail.html', {'product': product,})
 
-
-
-
-
+def add_categories(request):
+    categories = Category.objects.all
+    
+    return render(request, 'setup/categories.html', {'categories':categories})
 
 
 def contact_us(request):
