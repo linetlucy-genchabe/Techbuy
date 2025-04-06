@@ -15,6 +15,10 @@ def index(request):
     
     return render(request, 'index.html', {'products':products})
 
+def setup(request):
+    
+    return render(request, 'setup/setup.html')
+
 
 
 def products(request):
