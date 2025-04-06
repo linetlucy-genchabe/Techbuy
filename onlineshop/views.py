@@ -16,8 +16,11 @@ def index(request):
     return render(request, 'index.html', {'products':products})
 
 def setup(request):
+    product_count = Products.objects.count()
+    category_count = Category.objects.count()
+    brand_count = Brand.objects.count()
     
-    return render(request, 'setup/setup.html')
+    return render(request, 'setup/setup.html', {'product_count':product_count, 'category_count':category_count,'brand_count':brand_count })
 
 
 
