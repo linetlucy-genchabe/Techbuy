@@ -11,5 +11,6 @@ psycopg2-binary==2.9.10
 python-decouple==3.8
 soupsieve==2.6
 sqlparse==0.5.3
+sweetify==2.3.1
 typing_extensions==4.12.2
 tzdata==2025.2
