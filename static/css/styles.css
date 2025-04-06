@@ -69,6 +69,15 @@
     color:#000;
 }
 
+.add-category{
+    background-color: #a15b32;
+    padding: 10px;
+}
+
+.add-category:hover{
+    background-color: #a15b32;
+}
+
 
 /* sweet alert Styling */
 .swal2-popup.custom-toast {
