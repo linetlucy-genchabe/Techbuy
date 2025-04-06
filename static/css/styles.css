@@ -62,3 +62,20 @@
     color: #5c3b24;
     line-height: 1.6;
 }
+
+
+/* sweet alert Styling */
+.swal2-popup.custom-toast {
+    background-color: #faeec9 !important; 
+    color: white !important;
+}
+
+.swal2-title,
+.swal2-content {
+    color: white !important;
+}
+
+.swal2-styled.swal2-confirm {
+    background-color: #fff !important;
+    color: #5c3b24 !important;
+}

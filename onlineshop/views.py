@@ -58,7 +58,16 @@ def add_products(request):
                 )
 
                 products.save()
-                sweetify.toast(request,'Product Added Successfully')
+                sweetify.success(request, 'Success!', text='Product Added Successfully', persistent='Ok')
+#                 sweetify.success(
+#     request,
+#     'Success!',
+#     text='Product Added Successfully',
+#     persistent='Ok',
+#     custom_class='custom-toast',
+#     toast=True,
+# )
+
 
                 return redirect('products')
 
