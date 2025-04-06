@@ -83,9 +83,18 @@ def single_product(request, product_id):
     return render(request, 'public/product_detail.html', {'product': product,})
 
 def add_categories(request):
-    categories = Category.objects.all
+    category = None
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        # if name:
+            # Category.objects.create(name=name)
+        category = Category(name=name,description=description)
+        category.save()
+        return redirect('categories') 
+    categories = Category.objects.all()
     
-    return render(request, 'setup/categories.html', {'categories':categories})
+    return render(request, 'setup/categories.html', {'category':category,'categories':categories})
 
 
 def contact_us(request):
