@@ -11,8 +11,9 @@ import sweetify
 
 
 def index(request):
+    products = Products.objects.all
     
-    return render(request, 'index.html')
+    return render(request, 'index.html', {'products':products})
 
 
 
