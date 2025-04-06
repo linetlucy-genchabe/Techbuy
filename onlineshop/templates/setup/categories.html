@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Setup
+{% endblock title %}
+
+{% block content %}
+
+<section class="mb-4 mt-4">
+  <div class="card text-right col-md-3">
+
+  </div>
+  <div class="card">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col-md-6 text-center">
+          <h5 class="mb-0 text-end">
+            <strong>Categories</strong>
+          </h5>
+        </div>
+        <div class="col-md-6 d-flex flex-row-reverse"">
+        <button type="button" class="btn btn-primary add-category" data-mdb-modal-init data-mdb-target="#exampleModal">
+          Add New Category
+        </button>
+      </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover text-nowrap table-striped">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col" class="fw-bold">Category Name</th>
+              <th scope="col"class="fw-bold">Description</th>
+              <th scope="col"class="fw-bold">Updated By</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {% for category in categories %}
+            <tr>
+              <!-- <th scope="row">Value</th> -->
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ category.name }}</td>
+              <td>{{category.description}}</td>
+              <td>350</td>
+
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal top fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog  ">
+      
+      <div class="modal-content">
+        <form method="POST" action="{% url 'categories' %}">
+          {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add New Category</h5>
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+
+          <div class="form-outline mb-4" data-mdb-input-init>
+            <input type="text" class="form-control" name="name" id="categoryName" required>
+            <label class="form-label" for="form12">Category Name</label>
+          </div>
+
+          <div class="form-outline mb-4" data-mdb-input-init>
+            <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+            <label class="form-label" for="description">Description</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary close-category" data-mdb-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary add-category">Save Category</button>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+
+</section>
+
+
+
+{% endblock content%}
