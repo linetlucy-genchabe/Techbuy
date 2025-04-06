@@ -63,6 +63,12 @@
     line-height: 1.6;
 }
 
+/* setup styling */
+.add:hover{
+    background-color: #faeec9;
+    color:#000;
+}
+
 
 /* sweet alert Styling */
 .swal2-popup.custom-toast {
