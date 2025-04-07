@@ -62,3 +62,58 @@
     color: #5c3b24;
     line-height: 1.6;
 }
+
+/* setup styling */
+.add:hover{
+    background-color: #faeec9;
+    color:#000;
+}
+
+.add-category{
+    background-color: #a15b32;
+    padding: 10px;
+}
+
+.add-category:hover{
+    background-color: #a15b32;
+}
+
+.close-category{
+    background-color: #faeec9;
+    padding:10px;
+    color: #000;
+}
+
+.close-category:hover{
+    background-color: #faeec9;
+    
+}
+
+
+/* sweet alert Styling */
+.swal2-popup.custom-toast {
+    background-color: #faeec9 !important; 
+    color: white !important;
+}
+
+.swal2-title,
+.swal2-content {
+    color: white !important;
+}
+
+.swal2-styled.swal2-confirm {
+    background-color: #fff !important;
+    color: #5c3b24 !important;
+}
+ /* Home Images Products */
+
+ .home-images{
+    width: 100%;
+  height: 250px;
+  object-fit: contain;
+
+ }
+
+ .home-images-container:hover {
+    transform: scale(1.05);
+  }

@@ -15,6 +15,13 @@ def index(request):
     
     return render(request, 'index.html', {'products':products})
 
+def setup(request):
+    product_count = Products.objects.count()
+    category_count = Category.objects.count()
+    brand_count = Brand.objects.count()
+    
+    return render(request, 'setup/setup.html', {'product_count':product_count, 'category_count':category_count,'brand_count':brand_count })
+
 
 
 def products(request):
@@ -58,7 +65,7 @@ def add_products(request):
                 )
 
                 products.save()
-                sweetify.toast(request,'Product Added Successfully')
+                sweetify.success(request, 'Success!', text='Product Added Successfully', persistent='Ok')
 
                 return redirect('products')
 
@@ -73,14 +80,21 @@ def single_product(request, product_id):
     product = Products.objects.get(id=product_id)
     current_user = request.user
     # user = User.objects.get(username=current_user.username)
-   
-
     return render(request, 'public/product_detail.html', {'product': product,})
 
-
-
-
-
+def add_categories(request):
+    category = None
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        # if name:
+            # Category.objects.create(name=name)
+        category = Category(name=name,description=description)
+        category.save()
+        return redirect('categories') 
+    categories = Category.objects.all()
+    
+    return render(request, 'setup/categories.html', {'category':category,'categories':categories})
 
 
 def contact_us(request):
