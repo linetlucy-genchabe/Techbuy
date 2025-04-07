@@ -65,6 +65,11 @@ class Products(models.Model):
         products = cls.objects.all()
         return products
     
+# class ProductImage(models.Model):
+#     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="images")
+#     pic = models.ImageField(upload_to= "product_images/")
+#     angle = models.CharField(max_length=50, blank=True, null=True) 
+    
 
 class Customers(models.Model):
     Name = models.CharField(max_length=255)
