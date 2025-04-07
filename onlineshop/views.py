@@ -101,6 +101,20 @@ def add_categories(request):
     return render(request, 'setup/categories.html', {'categories': categories})
 
 
+# Brands additions
+def add_brands(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        if name:
+            Brand.objects.create(name=name)
+            return JsonResponse({'success': True, 'message': 'Brand added successfully!'})
+
+        return JsonResponse({'success': False, 'message': 'Name is required.'})
+
+    brands = Brand.objects.all()
+    return render(request, 'setup/brands.html', {'brands': brands})
+
+
 # def add_categories(request):
 #     category = None
 #     if request.method == 'POST':
