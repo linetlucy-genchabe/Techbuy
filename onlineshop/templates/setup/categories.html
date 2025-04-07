@@ -61,7 +61,8 @@ Setup
     <div class="modal-dialog  ">
       
       <div class="modal-content">
-        <form method="POST" action="{% url 'categories' %}">
+        <!-- <form method="POST" action="{% url 'categories' %}" > -->
+          <form id="categoryForm">
           {% csrf_token %}
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Add New Category</h5>
@@ -85,6 +86,10 @@ Setup
             Close
           </button>
           <button type="submit" class="btn btn-primary add-category">Save Category</button>
+          <span id="spinner" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div></span>
         </div>
       </div>
     </form>
@@ -92,6 +97,69 @@ Setup
   </div>
 
 </section>
+
+<script>
+  $(document).ready(function () {
+      $('#categoryForm').on('submit', function (e) {
+          e.preventDefault();
+  
+          $('#spinner').show();
+          $('#submitBtn').prop('disabled', true);
+  
+          $.ajax({
+              type: 'POST',
+              url: "{% url 'categories' %}",
+              data: $(this).serialize(),
+              success: function (response) {
+                  $('#spinner').hide();
+                  $('#submitBtn').prop('disabled', false);
+  
+                  if (response.success) {
+                      Swal.fire({
+                          icon: 'success',
+                          title: 'Success!',
+                          text: response.message,
+                          toast: true,
+                          position: 'top-end',
+                          timer: 10000,
+                          showConfirmButton: false
+                      });
+  
+                      $('#categoryModal').modal('hide');
+                      $('#categoryForm')[0].reset();
+  
+                      location.reload(); 
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: response.message,
+                          toast: true,
+                          position: 'top-end',
+                          timer: 10000,
+                          showConfirmButton: false
+                      });
+                  }
+              },
+              error: function () {
+                  $('#spinner').hide();
+                  $('#submitBtn').prop('disabled', false);
+  
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Server Error',
+                      text: 'Something went wrong!',
+                      toast: true,
+                      position: 'top-end',
+                      timer: 10000,
+                      showConfirmButton: false
+                  });
+              }
+          });
+      });
+  });
+  </script>
+  
 
 
 

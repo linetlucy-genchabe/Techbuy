@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import sweetify
+from django.http import JsonResponse
+
 
 
 
@@ -82,19 +84,36 @@ def single_product(request, product_id):
     # user = User.objects.get(username=current_user.username)
     return render(request, 'public/product_detail.html', {'product': product,})
 
+
+
+
 def add_categories(request):
-    category = None
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
-        # if name:
-            # Category.objects.create(name=name)
-        category = Category(name=name,description=description)
-        category.save()
-        return redirect('categories') 
+        if name:
+            Category.objects.create(name=name, description=description)
+            return JsonResponse({'success': True, 'message': 'Category added successfully!'})
+
+        return JsonResponse({'success': False, 'message': 'Name is required.'})
+
     categories = Category.objects.all()
+    return render(request, 'setup/categories.html', {'categories': categories})
+
+
+# def add_categories(request):
+#     category = None
+#     if request.method == 'POST':
+#         name = request.POST.get('name')
+#         description = request.POST.get('description')
+#         # if name:
+#             # Category.objects.create(name=name)
+#         category = Category(name=name,description=description)
+#         category.save()
+#         return redirect('categories') 
+#     categories = Category.objects.all()
     
-    return render(request, 'setup/categories.html', {'category':category,'categories':categories})
+#     return render(request, 'setup/categories.html', {'category':category,'categories':categories})
 
 
 def contact_us(request):
