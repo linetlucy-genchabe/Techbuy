@@ -29,52 +29,92 @@ def setup(request):
 def products(request):
     
     products = Products.objects.all
+    categories = Category.objects.all()
+    brands = Brand.objects.all()
     
-    return render(request, 'public/products.html', {'products':products})
+    return render(request, 'public/products.html', {'categories':categories, 'brands':brands,'products':products})
 
 # @login_required
 def add_products(request):
-    
     categories = Category.objects.all()
     brands = Brand.objects.all()
+
     if request.method == 'POST':
-        # Check if vendor exists
-        
-            name = request.POST.get('name')
-            pic = request.FILES.get('pic')
-            description = request.POST.get('description')
-            product_category_id = request.POST.get('category')
-            price = request.POST.get('price')
-            product_brand_id = request.POST.get('brand')
-            # stock = request.POST.get('brand')
-        
-            # Ensure category exists
-            category_instance = Category.objects.filter(id=product_category_id).first()
-            print("category is:", category_instance)
-            product_instance = Brand.objects.filter(id=product_brand_id).first()
+        name = request.POST.get('name')
+        pic = request.FILES.get('pic')
+        description = request.POST.get('description')
+        product_category_id = request.POST.get('category')
+        price = request.POST.get('price')
+        product_brand_id = request.POST.get('brand')
 
+        category_instance = Category.objects.filter(id=product_category_id).first()
+        brand_instance = Brand.objects.filter(id=product_brand_id).first()
 
-            if category_instance:
-                products = Products(
-                    
-                    pic=pic,
-                    description=description,
-                    name=name,
-                    product_category=category_instance,
-                    product_brand=product_instance,
-                    price=price,
-                    
-                )
+        if not category_instance:
+            return JsonResponse({'success': False, 'message': 'Invalid Category'})
 
-                products.save()
-                sweetify.success(request, 'Success!', text='Product Added Successfully', persistent='Ok')
+        if not brand_instance:
+            return JsonResponse({'success': False, 'message': 'Invalid Brand'})
 
-                return redirect('products')
+        Products.objects.create(
+            name=name,
+            pic=pic,
+            description=description,
+            product_category=category_instance,
+            product_brand=brand_instance,
+            price=price
+        )
 
-            else:
-                print("⚠️ Invalid Category:", product_category_id)
+        return JsonResponse({'success': True, 'message': 'Product Added Successfully'})
+
+    return render(request, 'public/add_products.html', {
+        'categories': categories,
+        'brands': brands
+    })
     
-    return render(request, 'public/add_products.html', {'categories':categories, 'brands':brands})
+    
+# def add_products(request):
+    
+#     categories = Category.objects.all()
+#     brands = Brand.objects.all()
+#     if request.method == 'POST':
+#         # Check if vendor exists
+        
+#             name = request.POST.get('name')
+#             pic = request.FILES.get('pic')
+#             description = request.POST.get('description')
+#             product_category_id = request.POST.get('category')
+#             price = request.POST.get('price')
+#             product_brand_id = request.POST.get('brand')
+#             # stock = request.POST.get('brand')
+        
+#             # Ensure category exists
+#             category_instance = Category.objects.filter(id=product_category_id).first()
+#             print("category is:", category_instance)
+#             product_instance = Brand.objects.filter(id=product_brand_id).first()
+
+
+#             if category_instance:
+#                 products = Products(
+                    
+#                     pic=pic,
+#                     description=description,
+#                     name=name,
+#                     product_category=category_instance,
+#                     product_brand=product_instance,
+#                     price=price,
+                    
+#                 )
+
+#                 products.save()
+#                 sweetify.success(request, 'Success!', text='Product Added Successfully', persistent='Ok')
+
+#                 return redirect('products')
+
+#             else:
+#                 print("⚠️ Invalid Category:", product_category_id)
+    
+#     return render(request, 'public/add_products.html', {'categories':categories, 'brands':brands})
 
 
 
