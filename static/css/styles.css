@@ -120,6 +120,10 @@
     100% { transform: rotate(360deg); }
 }
 
+#overlay-loader.show {
+    display: flex !important;
+}
+
  /* Home Images Products */
 
  .home-images{
