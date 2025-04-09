@@ -69,14 +69,16 @@
     color:#000;
 }
 
-.add-category, .add-products{
+.add-category, .add-products, .add-to-cart-home{
     background-color: #a15b32;
     padding: 10px;
 }
 
-.add-products:hover, .add-category:hover{
+.add-products:hover, .add-category:hover, .add-to-cart-home:hover{
     background-color: #a15b32;
 }
+
+
 
 .close-category{
     background-color: #faeec9;
