@@ -97,7 +97,7 @@ class Orders(models.Model):
         
 class Reviews(models.Model):
     
-    Comment = models.CharField(max_length=1000)
+    Comment = models.TextField(max_length=1000)
     rating = models.IntegerField(default=0)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customers, on_delete=models.CASCADE)

@@ -9,6 +9,9 @@ urlpatterns = [
     # admin setup module
     path('setup', views.setup, name='setup'),
     path('products/', views.products, name='products'),
+    path('reviews', views.reviews, name='reviews'),
+    path('new-review', views.new_review, name='new-review'),
+
     
     path('add_products/', views.add_products, name='add_products'),
     # Add & view Categories
