@@ -150,5 +150,20 @@ def add_to_cart(request):
 
 
 
+def view_cart(request):
+    cart = request.session.get('cart', {})
+    return JsonResponse({
+        'success': True,
+        'cart': cart,
+        'cartItemCount': sum(item['quantity'] for item in cart.values()),
+        'totalPrice': sum(item['price'] * item['quantity'] for item in cart.values())
+    })
+
+
+
+
+
+
+
 
 
