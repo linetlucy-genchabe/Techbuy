@@ -49,7 +49,7 @@ def new_review(request):
             review = form.save(commit=False)
             
             review.save()
-            return redirect('index')
+            return redirect('reviews')
 
     else:
         form = AddReviewsForm()
