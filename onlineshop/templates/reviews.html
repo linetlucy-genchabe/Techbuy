@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<div class="container-fluid" style="background-color: rgb(180, 109, 47); margin-top: 1%; margin-bottom: 1%; padding-bottom: 2%;">
+    <h3>
+        <a class="nav-link font-weight-bold" href="{% url 'new-review' %}" style="color: rgb(79, 38, 6); text-align: center;">Add Review</a>
+    </h3>
+    <hr style="color: aliceblue;">
+    
+    <div class="row">
+        <div class="col-md-1">
+            
+        </div>
+        <div class="col-md-10">
+            <div class="reviews">
+                <h2>What our clients say...</h2>
+                <div class="col-md-4">
+                    <!-- <h2>What our clients say...</h2> -->
+
+                    {% for review in reviews %}
+                    <div class="review-card" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 15px; margin-bottom: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);">
+                        <h4>{{ review.customer.name }} reviewed {{ review.product.name }}</h4>
+                        <p>Rating: ⭐ {{ review.rating }}/5</p>
+                        <p>{{ review.Comment }}</p>
+                        <!-- <small>Posted on {{ review.created_at|date:"F j, Y, g:i a" }}</small> -->
+                    </div>
+                
+                    {% empty %}
+                    <p>No reviews yet. Be the first to add one!</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+
+
+{% endblock content %}

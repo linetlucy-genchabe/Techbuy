@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from .models import *
+from .forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -33,6 +34,26 @@ def products(request):
     brands = Brand.objects.all()
     
     return render(request, 'public/products.html', {'categories':categories, 'brands':brands,'products':products})
+
+def reviews(request):
+    
+    reviews = Reviews.objects.all
+    
+    return render(request, 'reviews.html', {'reviews':reviews})
+
+def new_review(request):
+    
+    if request.method == 'POST':
+        form = AddReviewsForm(request.POST, request.FILES)
+        if form.is_valid():
+            review = form.save(commit=False)
+            
+            review.save()
+            return redirect('index')
+
+    else:
+        form = AddReviewsForm()
+    return render(request, 'add_review.html', {"form": form})
 
 # @login_required
 def add_products(request):

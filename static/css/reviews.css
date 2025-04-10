@@ -1,0 +1,69 @@
+.reviews {
+    background-color: rgb(237, 183, 136);
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 30px;
+    color: rgb(21, 21, 21);
+    text-align: center;
+}
+
+.reviews-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.reviews img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.reviews p {
+    font-size: 16px;
+    max-width: 600px;
+    text-align: left;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+.custom-style {
+    border-radius: 8px; /* Apply border radius */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Apply soft box shadow */
+    padding: 10px; /* Optional: Add padding to give some space inside the input */
+    transition: all 0.3s ease; /* Smooth transition on hover */
+}
+
+.custom-style:focus {
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.6); /* Change box shadow color on focus */
+    outline: none; /* Remove default focus outline */
+}
+
+/* For form styling */
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* Responsive behavior for the form container */
+@media (max-width: 767px) {
+    .card {
+        padding: 15px; /* Add smaller padding on smaller screens */
+    }
+    .nav-link {
+        font-size: 18px; /* Adjust text size on small screens */
+    }
+}
+
+/* Adjust card size on larger screens */
+@media (min-width: 768px) {
+    .card {
+        padding: 30px; /* Add more padding for larger screens */
+    }
+}
