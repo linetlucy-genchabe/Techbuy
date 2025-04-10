@@ -70,19 +70,27 @@
     color:#000;
 }
 
-.add-category{
+.add-category, .add-products, .add-to-cart-home{
     background-color: #a15b32;
     padding: 10px;
 }
 
-.add-category:hover{
+.add-products:hover, .add-category:hover, .add-to-cart-home:hover{
     background-color: #a15b32;
 }
+
+
 
 .close-category{
     background-color: #faeec9;
     padding:10px;
     color: #000;
+}
+
+.product-image-detail{
+    width: 100%;
+    height: 50vh;
+    object-fit: contain;
 }
 
 .close-category:hover{
@@ -91,21 +99,40 @@
 }
 
 
-/* sweet alert Styling */
-.swal2-popup.custom-toast {
-    background-color: #faeec9 !important; 
-    color: white !important;
+/* Modal  Styling On submit */
+/* Add this to your CSS file */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 1040;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.swal2-title,
-.swal2-content {
-    color: white !important;
+.modal-overlay::after {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
-.swal2-styled.swal2-confirm {
-    background-color: #fff !important;
-    color: #5c3b24 !important;
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
+
+#overlay-loader.show {
+    display: flex !important;
+}
+
  /* Home Images Products */
 
  .home-images{
@@ -119,4 +146,4 @@
     transform: scale(1.05);
   }
 
-  
+

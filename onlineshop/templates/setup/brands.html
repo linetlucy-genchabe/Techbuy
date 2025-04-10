@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Setup
+{% endblock title %}
+
+{% block content %}
+
+<section class="mb-4 mt-4">
+    <div class="card text-right col-md-3">
+
+    </div>
+    <div class="card">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <h5 class="mb-0 text-end">
+                        <strong>Brands</strong>
+                    </h5>
+                </div>
+                <div class="col-md-6 d-flex flex-row-reverse"">
+        <button type=" button" class="btn btn-primary add-category" data-mdb-modal-init
+                    data-mdb-target="#exampleModal">
+                    Add New Brand
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover text-nowrap table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col" class="fw-bold">Brand Name</th>
+                            <!-- <th scope="col"class="fw-bold">Description</th> -->
+                            <th scope="col" class="fw-bold">Updated By</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for brand in brands %}
+                        <tr>
+                            <!-- <th scope="row">Value</th> -->
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ brand.name }}</td>
+                            <td>350</td>
+
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal top fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-mdb-backdrop="true" data-mdb-keyboard="true">
+        <div class="modal-dialog  ">
+            <div class="modal-content">
+                <form id="brandForm">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Brand</h5>
+                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-outline mb-4" data-mdb-input-init>
+                            <input type="text" class="form-control" name="name" id="brand-name" required>
+                            <label class="form-label" for="form12">Brand Name</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary close-category" data-mdb-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary add-category" id="submitBtn">Save Brand</button>
+                        <span id="spinner" style="display: none;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    $(document).ready(function () {
+        $('#brandForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $('#spinner').show();
+            $('#submitBtn').prop('disabled', true);
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'brands' %}",
+                data: $(this).serialize(),
+                success: function (response) {
+                    $('#spinner').hide();
+                    $('#submitBtn').prop('disabled', false);
+
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: response.message,
+                            toast: true,
+                            position: 'top-end',
+                            timer: 10000,
+                            showConfirmButton: false
+                        });
+
+                          $('#exampleModal').modal('hide');
+                        $('#brandForm')[0].reset();
+
+                        location.reload();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.message,
+                            toast: true,
+                            position: 'top-end',
+                            timer: 10000,
+                            showConfirmButton: false
+                        });
+                    }
+                },
+                error: function () {
+                    $('#spinner').hide();
+                    $('#submitBtn').prop('disabled', false);
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Server Error',
+                        text: 'Something went wrong!',
+                        toast: true,
+                        position: 'top-end',
+                        timer: 10000,
+                        showConfirmButton: false
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+
+{% endblock content%}

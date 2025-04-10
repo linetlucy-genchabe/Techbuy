@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import sweetify
+from django.http import JsonResponse
+
 
 
 
@@ -28,8 +30,10 @@ def setup(request):
 def products(request):
     
     products = Products.objects.all
+    categories = Category.objects.all()
+    brands = Brand.objects.all()
     
-    return render(request, 'public/products.html', {'products':products})
+    return render(request, 'public/products.html', {'categories':categories, 'brands':brands,'products':products})
 
 def reviews(request):
     
@@ -53,48 +57,43 @@ def new_review(request):
 
 # @login_required
 def add_products(request):
-    
     categories = Category.objects.all()
     brands = Brand.objects.all()
+
     if request.method == 'POST':
-        # Check if vendor exists
-        
-            name = request.POST.get('name')
-            pic = request.FILES.get('pic')
-            description = request.POST.get('description')
-            product_category_id = request.POST.get('category')
-            price = request.POST.get('price')
-            product_brand_id = request.POST.get('brand')
-            # stock = request.POST.get('brand')
-        
-            # Ensure category exists
-            category_instance = Category.objects.filter(id=product_category_id).first()
-            print("category is:", category_instance)
-            product_instance = Brand.objects.filter(id=product_brand_id).first()
+        name = request.POST.get('name')
+        pic = request.FILES.get('pic')
+        description = request.POST.get('description')
+        product_category_id = request.POST.get('category')
+        price = request.POST.get('price')
+        product_brand_id = request.POST.get('brand')
 
+        category_instance = Category.objects.filter(id=product_category_id).first()
+        brand_instance = Brand.objects.filter(id=product_brand_id).first()
 
-            if category_instance:
-                products = Products(
-                    
-                    pic=pic,
-                    description=description,
-                    name=name,
-                    product_category=category_instance,
-                    product_brand=product_instance,
-                    price=price,
-                    
-                )
+        if not category_instance:
+            return JsonResponse({'success': False, 'message': 'Invalid Category'})
 
-                products.save()
-                sweetify.success(request, 'Success!', text='Product Added Successfully', persistent='Ok')
+        if not brand_instance:
+            return JsonResponse({'success': False, 'message': 'Invalid Brand'})
 
-                return redirect('products')
+        Products.objects.create(
+            name=name,
+            pic=pic,
+            description=description,
+            product_category=category_instance,
+            product_brand=brand_instance,
+            price=price
+        )
 
-            else:
-                print("⚠️ Invalid Category:", product_category_id)
+        return JsonResponse({'success': True, 'message': 'Product Added Successfully'})
+
+    return render(request, 'public/add_products.html', {
+        'categories': categories,
+        'brands': brands
+    })
     
-    return render(request, 'public/add_products.html', {'categories':categories, 'brands':brands})
-
+    
 
 
 def single_product(request, product_id):
@@ -103,21 +102,89 @@ def single_product(request, product_id):
     # user = User.objects.get(username=current_user.username)
     return render(request, 'public/product_detail.html', {'product': product,})
 
+
+
+
 def add_categories(request):
-    category = None
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
-        # if name:
-            # Category.objects.create(name=name)
-        category = Category(name=name,description=description)
-        category.save()
-        return redirect('categories') 
+        if name:
+            Category.objects.create(name=name, description=description)
+            return JsonResponse({'success': True, 'message': 'Category added successfully!'})
+
+        return JsonResponse({'success': False, 'message': 'Name is required.'})
+
     categories = Category.objects.all()
-    
-    return render(request, 'setup/categories.html', {'category':category,'categories':categories})
+    return render(request, 'setup/categories.html', {'categories': categories})
+
+
+# Brands additions
+def add_brands(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        if name:
+            Brand.objects.create(name=name)
+            return JsonResponse({'success': True, 'message': 'Brand added successfully!'})
+
+        return JsonResponse({'success': False, 'message': 'Name is required.'})
+
+    brands = Brand.objects.all()
+    return render(request, 'setup/brands.html', {'brands': brands})
+
+
 
 
 def contact_us(request):
     
     return render(request, 'public/contact_us.html')
+
+
+
+def add_to_cart(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        quantity = int(request.POST.get('quantity', 1))
+
+        product = get_object_or_404(Products, id=product_id)
+
+        cart = request.session.get('cart', {})
+
+        if product_id in cart:
+            cart[product_id]['quantity'] += quantity
+        else:
+            cart[product_id] = {
+                'name': product.name,
+                'price': float(product.price),
+                'quantity': quantity,
+            }
+
+        request.session['cart'] = cart
+
+        return JsonResponse({
+            'success': True,
+            'message': f"{product.name} added to cart!",
+            'cartItemCount': sum(item['quantity'] for item in cart.values())
+        })
+
+    return JsonResponse({'success': False, 'message': 'Invalid request'})
+
+
+
+def view_cart(request):
+    cart = request.session.get('cart', {})
+    return JsonResponse({
+        'success': True,
+        'cart': cart,
+        'cartItemCount': sum(item['quantity'] for item in cart.values()),
+        'totalPrice': sum(item['price'] * item['quantity'] for item in cart.values())
+    })
+
+
+
+
+
+
+
+
+

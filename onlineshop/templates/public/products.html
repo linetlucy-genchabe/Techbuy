@@ -5,20 +5,16 @@
 <section class="organic-section">
     <div class="container text-center">
         <h1 class="organic-title">A1 Products here at TechBuy</h1>
-        <a href="{% url 'add_products' %}" class="" id="login-link"><button
-                class="btn btn-outline-light btn-rounded mb-3" me-lg-3" type="submit">Add Product</button></a>
+
+        <div class="mb-2">
+            <button type="button" class="btn btn-outline-dark btn-rounded   btn-lg add-product" data-mdb-modal-init
+                data-mdb-target="#exampleModal" data-mdb-ripple-color="#000000"> Add Product(s) <i
+                    class="fa-solid fa-plus ms-1"></i></button>
+        </div>
+
+
 
         <div class="row justify-content-center">
-            <!-- All In oNes -->
-            <!-- {% for product in products %}
-            <div class="col-md-4">
-                <div class="product-card" data-mdb-modal-init data-mdb-target="#exampleModal">
-                    <img src="{{product.pic.url}}" alt="Product Image">
-                </div>
-                <h3 class="product-title">{{product.name}}</h3>
-                <p class="product-description">{{product.description}}</p>
-            </div>
-            {% endfor %} -->
             {% for product in products %}
             <div class="col-md-4">
                 <a href="{% url 'product_detail' product.id %}" class="text-decoration-none">
@@ -34,10 +30,185 @@
             {% endfor %}
 
         </div>
+
+        <!-- ADD PRODUCTS MODAL -->
+        <div class="modal top fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+            <div class="modal-dialog modal-lg ">
+                <div class="modal-content">
+                    <form id="productsForm">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add New Product</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-outline mb-4" data-mdb-input-init>
+                                <input type="text" class="form-control" name="name" id="name" required>
+                                <label class="form-label" for="form12">Product Name</label>
+                            </div>
+
+                            <div class="form-outline mb-4" data-mdb-input-init>
+                                <input type="text" class="form-control" name="price" id="price" required>
+                                <label class="form-label" for="form12">Product Price</label>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-outline">
+                                        <select id="category" class="form-select" name="category" required
+                                            data-mdb-select-init>
+                                            <option value="">Select Category...</option>
+                                            {% for category in categories %}
+                                            <option value="{{ category.id }}">
+                                                {{ category.name }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-outline">
+                                        <select id="brand" class="form-select" name="brand" required
+                                            data-mdb-select-init>
+                                            <option value="">Select Brand...</option>
+                                            {% for brand in brands %}
+                                            <option value="{{ brand.id }}">
+                                                {{ brand.name }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="input-group mb-4">
+                                <input type="file" class="form-control" aria-describedby="inputGroupFileAddon04"
+                                    aria-label="Upload" id="pic" name="pic" />
+                            </div>
+
+                            <div class="form-outline" data-mdb-input-init>
+                                <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                                <label class="form-label" for="textAreaExample">Product Description</label>
+                            </div>
+
+
+
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary close-category" data-mdb-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-primary add-products" id="submitBtn">Save
+                                Brand</button>
+                            <span id="spinner" style="display: none;">
+                                <i class="fas fa-hourglass-half fa-spin"></i>
+                                <!-- <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div> -->
+                            </span>
+                        </div>
+                </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="overlay-loader"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); z-index: 1050; align-items: center; justify-content: center; flex-direction: column; color: white; font-size: 20px;">
+            <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Updating Products...</p>
+        </div>
+
 </section>
 
-<style>
 
-</style>
+
+
+<script>
+    $('#productsForm').on('submit', function (e) { 
+        e.preventDefault();
+
+        let formData = new FormData(this);
+
+        $('#submitBtn').prop('disabled', true);
+        $('#spinner').show();
+        $('#exampleModal').find('.modal-content').append(
+            '<div class="modal-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.7);z-index:1040;"></div>'
+        );
+
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'add_products' %}",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                $('#spinner').hide();
+                $('#submitBtn').prop('disabled', false);
+
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: response.message,
+                        timer: 7000,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false
+                    })
+
+                    $('#productsForm')[0].reset();
+                    $('#exampleModal').modal('hide');
+
+                    $('#overlay-loader').addClass('show');
+
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message,
+                        timer: 6000,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false
+                    });
+                }
+            },
+            error: function (xhr, errmsg, err) {
+                $('#spinner').hide();
+                $('#submitBtn').prop('disabled', false);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    // text: 'An unexpected error occurred: ' + xhr.status + ' ' + errmsg,
+                    text: 'An unexpected error occurred',
+                    timer: 6000,
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false
+                });
+
+            }
+        });
+    });
+</script>
+
+
+
 
 {% endblock content %}
