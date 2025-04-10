@@ -15,8 +15,9 @@ from django.http import JsonResponse
 
 def index(request):
     products = Products.objects.all
+    reviews = Reviews.objects.all
     
-    return render(request, 'index.html', {'products':products})
+    return render(request, 'index.html', {'products':products, 'reviews':reviews},)
 
 def setup(request):
     product_count = Products.objects.count()

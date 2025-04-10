@@ -39,4 +39,28 @@
 </div>
 
 
+{% for review in reviews %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    
+    <div class="col">
+        
+       <div class="card">
+            <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill"/>
+            <div class="card-body">
+
+                <h4>{{ review.customer.name }} reviewed {{ review.product.name }}</h4>
+                <p>Rating: ⭐ {{ review.rating }}/5</p>
+                <p>{{ review.Comment }}</p>
+                <!-- <small>Posted on {{ review.created_at|date:"F j, Y, g:i a" }}</small> -->
+            </div>
+        </div>
+        {% empty %}
+        <p>No reviews yet. Be the first to add one!</p>
+        
+    </div>
+  
+</div>
+   
+{% endfor %}
+
 {% endblock content %}
