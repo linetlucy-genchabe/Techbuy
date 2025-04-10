@@ -27,7 +27,7 @@
     align-items: center;
     justify-content: center;
     padding: 40px;
-    background-color: #f8ecc2;
+    background-color: #eceff6;
     margin-top: 2%;
 }
 
@@ -49,18 +49,21 @@
     flex: 1;
     max-width: 500px;
     padding: 20px;
-    background-color: #faeec9; /* Light cream */
+    border-radius: 5%;
+    background-color: #eef1fa; /* Light cream */
 }
-
+.text-container:hover{
+    background-color: #cfdcf7;
+}
 .text-container h2 {
     font-size: 28px;
-    color: #a15b32; /* Brown tone */
+    color: #010a1d; /* Brown tone */
     margin-bottom: 10px;
 }
 
 .text-container p {
     font-size: 18px;
-    color: #5c3b24;
+    color: black;
     line-height: 1.6;
 }
 

@@ -28,10 +28,10 @@
     text-align: left;
 }
 
-.container {
+/* .container {
     display: flex;
     justify-content: center;
-}
+} */
 .custom-style {
     border-radius: 8px; /* Apply border radius */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Apply soft box shadow */
@@ -50,7 +50,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
-
+/* 
 /* Responsive behavior for the form container */
 @media (max-width: 767px) {
     .card {
@@ -66,4 +66,4 @@
     .card {
         padding: 30px; /* Add more padding for larger screens */
     }
-}
+} 
