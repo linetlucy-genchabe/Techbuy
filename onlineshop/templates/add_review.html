@@ -3,30 +3,37 @@
 
 {% block content%}
 
-
+<!-- 
     <div class="jumbotron jumbotron-fluid bg-white pb-3 pt-4 shadow" style="margin-top: 1%;">
             
        <h1 class="display-5 text-center font-weight-bold" style="color: rgb(92, 50, 4);">Add Review </h1>
     
-    </div>      
-<div class="container">
-  <div class="row">
-      <!-- Empty div -->
-      <div class="col-lg-3"></div>
+    </div>       -->
 
-      <div class="col-lg-6 pt-2 shadow" style=" padding-bottom:1%;margin-top: 1%;margin-bottom: 1%;">
-            <form  action="{%url 'new-review'%}" method="post" style="padding-top: 3%;" enctype="multipart/form-data">
-              {%csrf_token%}
 
-              {% bootstrap_form form%}
-              
-              <input type="submit" class="btn btn-outline-info btn-lg font-weight-bold" value="SUBMIT">
-            </form>
-      </div>
-
-      <div class="col-lg-3"></div>
+<div class="container-fluid" style="background-color: rgb(180, 109, 47); margin-top: 1%; margin-bottom: 1%; padding-bottom: 2%;">
+    <h3><a class="nav-link font-weight-bold" href="{% url 'new-review' %}" style="color: rgb(79, 38, 6); text-align: center;">Add Review</a></h3>
+    <hr style="color: aliceblue;">
     
-  </div>
- 
+    <!-- Row for form alignment -->
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-5"> <!-- Adjust the col size based on screen width -->
+            <div class="card p-4">
+                <h4>Write a Review</h4>
+                
+                <!-- Form start -->
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }} <!-- Render the form fields here -->
+
+                    <button type="submit" class="btn btn-outline-info btn-block mt-3">Submit Review</button>
+                </form>
+                <!-- Form end -->
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
 {% endblock %}
