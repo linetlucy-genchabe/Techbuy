@@ -135,53 +135,30 @@
 
     </div>
   </main>
-  <!--Main layout-->
-
-  <!-- <section class="text-center">
-    <h4 class="mb-5"><strong>Reviews</strong></h4>
-    <div class="row">
-      {% for review in reviews %}
-      <div class="col-lg-4 col-md-12 mb-4">
-        <div class="card">
-          <div class="bg-image hover-overlay home-images-container" data-mdb-ripple-init data-mdb-ripple-color="light">
-
-            <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top"
-              alt="Hollywood Sign on The Hill" />
-            <a href="#!">
-              <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-            </a>
-          </div>
-          <div class="card-body">
-            <h4>{{ review.customer.name }} reviewed {{ review.product.name }}</h4>
-            <p>Rating: ⭐ {{ review.rating }}/5</p>
-            <p>{{ review.Comment }}</p>
-          </div>
-        </div>
-        {% empty %}
-        <p>No reviews yet. Be the first to add one!</p>
-
-      </div>
-      {% endfor %}
-    </div>
-    
-    
-  </section> -->
+ 
 
   <main class="my-5">
-    <div class="container">
+    <div class="container-fluid" style="background-color: rgb(235, 237, 248);">
       <!--Section: Content-->
       <section class="text-center">
         <h4 class="mb-5"><strong>Hot Reviews</strong></h4>
 
-        <div class="row">
+        <div class="row" >
           {% for review in reviews %}
           <div class="col-lg-4 col-md-12 mb-4">
             <div class="card">
               <div class="bg-image hover-overlay home-images-container" data-mdb-ripple-init
                 data-mdb-ripple-color="light">
 
-                <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top"
-                  alt="Hollywood Sign on The Hill" />
+                <div class="bg-image hover-overlay home-images-container" data-mdb-ripple-init
+                data-mdb-ripple-color="light">
+
+                <img src="{{review.product.pic.url}}" class="img-fluid home-images" />
+                <a href="#!">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+                  
                 <a href="#!">
                   <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                 </a>
