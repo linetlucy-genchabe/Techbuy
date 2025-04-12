@@ -6,184 +6,191 @@
     <button id="viewCartBtn" class="btn btn-primary">View Cart</button>
 
 </div> -->
+<div class="container-fluid">
 
+    <main class="mt-5 pt-4">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <img src="{{product.pic.url}}" class="img-fluid product-image-detail" alt="{{product.name}}" />
+                </div>
 
-<main class="mt-5 pt-4">
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6 mb-4">
-                <img src="{{product.pic.url}}" class="img-fluid product-image-detail" alt="{{product.name}}" />
-            </div>
+                <div class="col-md-6 mb-4">
+                    <!--Content-->
+                    <div class="p-4">
+                        <div class="mb-3">
+                            <a href="">
+                                <span class="badge me-1 p-2 badge-category">{{product.product_category}}</span>
+                            </a>
+                            <a href="">
+                                <span class="badge me-1 p-2 badge-brand">{{product.product_brand.name}}</span>
+                            </a>
+                            <a href="">
+                                <span class="badge me-1 p-2 badge-seller">Seller Here</span>
+                            </a>
+                        </div>
 
-            <div class="col-md-6 mb-4">
-                <!--Content-->
-                <div class="p-4">
-                    <div class="mb-3">
-                        <a href="">
-                            <span class="badge me-1 p-2 badge-category">{{product.product_category}}</span>
-                        </a>
-                        <a href="">
-                            <span class="badge me-1 p-2 badge-brand">{{product.product_brand.name}}</span>
-                        </a>
-                        <a href="">
-                            <span class="badge me-1 p-2 badge-seller">Seller Here</span>
-                        </a>
-                    </div>
+                        <p class="lead">
+                            <span class="me-1">
+                                <!-- <del>1500</del> -->
+                            </span>
+                            <span class="fw-bold">{{product.price|currency_kes}}</span>
+                        </p>
 
-                    <p class="lead">
-                        <span class="me-1">
-                            <!-- <del>1500</del> -->
-                        </span>
-                        <span class="fw-bold">{{product.price|currency_kes}}</span>
-                    </p>
+                        <strong>
+                            <p style="font-size: 20px;">Description</p>
+                        </strong>
 
-                    <strong>
-                        <p style="font-size: 20px;">Description</p>
-                    </strong>
+                        <p>{{product.description}}.</p>
+                        <small class="text-success">In Stock</small>
+                        <div class="rating mb-2">
+                            <i class="fa-solid fa-star fa-1x text-warning"></i>
+                            <i class="fa-solid fa-star text-warning"></i>
+                            <i class="fa-solid fa-star text-warning"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>
+                            <i class="fa-solid fa-star text-secondary"></i>(200 Verified ratings)
 
-                    <p>{{product.description}}.</p>
-                    <small class="text-success">In Stock</small>
-                    <div class="rating mb-2">
-                        <i class="fa-solid fa-star fa-1x text-warning"></i>
-                        <i class="fa-solid fa-star text-warning"></i>
-                        <i class="fa-solid fa-star text-warning"></i>
-                        <i class="fa-solid fa-star text-secondary"></i>
-                        <i class="fa-solid fa-star text-secondary"></i>(200 Verified ratings)
+                        </div>
 
-                    </div>
-
-                    <form class="d-flex justify-content-left">
-                        <!-- Default input -->
-                        <!-- <div class="form-outline me-1" style="width: 100px;">
+                        <form class="d-flex justify-content-left">
+                            <!-- Default input -->
+                            <!-- <div class="form-outline me-1" style="width: 100px;">
                             <input type="number" value="1" class="form-control " />
                         </div> -->
-                        <div class="form-outline me-1" data-mdb-input-init style="width: 100px;">
-                            <input type="number" id="typeNumber" class="form-control" value="1" min="1" />
+                            <div class="form-outline me-1" data-mdb-input-init style="width: 100px;">
+                                <input type="number" id="typeNumber" class="form-control" value="1" min="1" />
 
-                        </div>
-                        <div class="cart">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-primary add-to-cart" type="button" data-mdb-ripple-init
-                                    data-product-id="{{ product.id }}"><i class="fa-solid fa-cart-plus fa-1x"></i> Add
-                                    to
-                                    Cart</button>
                             </div>
+                            <div class="cart">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary add-to-cart" type="button" data-mdb-ripple-init
+                                        data-product-id="{{ product.id }}"><i class="fa-solid fa-cart-plus fa-1x"></i>
+                                        Add
+                                        to
+                                        Cart</button>
+                                </div>
 
-                            <!-- <button class="btn btn-sm btn-success add-to-cart-btn" >
+                                <!-- <button class="btn btn-sm btn-success add-to-cart-btn" >
                                 Add to Cart
                             </button> -->
-                        </div>
-                        <button class="btn order-btn ms-1" type="submit">
-                            Order Now!
-                            <!-- <i class="fas fa-shopping-cart ms-1"></i> -->
-                        </button>
-                    </form>
+                            </div>
+                            <button class="btn order-btn ms-1" type="submit">
+                                Order Now!
+                                <!-- <i class="fas fa-shopping-cart ms-1"></i> -->
+                            </button>
+                        </form>
+                    </div>
+                    <!--Content-->
                 </div>
-                <!--Content-->
             </div>
-           
+
             <!-- Cart Modal -->
 
-            <div class="modal top fade" id="viewCartBtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+            <div class="modal top fade" id="viewCartBtn" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
                 <div class="modal-dialog  ">
-                  <div class="modal-content">
-                    <div class="modal-header bg-info">
-                      <h5 class="modal-title text-light" id="exampleModalLabel">My Cart</h5>
-                      <button type="button" class="btn-close btn-light" data-mdb-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="cartItems"></div>
+                    <div class="modal-content">
+                        <div class="modal-header bg-info">
+                            <h5 class="modal-title text-light" id="exampleModalLabel">My Cart</h5>
+                            <button type="button" class="btn-close btn-light" data-mdb-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="cartItems"></div>
                             <div id="cartTotal" class="mt-3 font-weight-bold"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                                Close Cart
+                            </button>
+
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
-                        Close Cart
-                      </button>
-                      
-                    </div>
-                  </div>
                 </div>
-              </div>
+            </div>
+        </div>
+    </main>
+</div>
 
 
-            <script>
-                $(document).on('click', '.add-to-cart', function () {
-                    const productId = $(this).data('product-id');
-                    const quantity = $('#quantity-' + productId).val() || 1;
+<script>
+    $(document).on('click', '.add-to-cart', function () {
+        const productId = $(this).data('product-id');
+        const quantity = $('#quantity-' + productId).val() || 1;
 
-                    $.ajax({
-                        url: "{% url 'add_to_cart' %}",
-                        type: "POST",
-                        data: {
-                            'product_id': productId,
-                            'quantity': quantity,
-                            'csrfmiddlewaretoken': '{{ csrf_token }}',
-                        },
-                        success: function (response) {
-                            if (response.success) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    toast: true,
-                                    timer: 3000,
-                                    title: response.message,
-                                    position: 'top-end',
-                                    showConfirmButton: false
-                                });
-
-                                $('#cart-count').text(response.cartItemCount);
-                            }
-                        },
-                        error: function () {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: 'Something went wrong!',
-                                toast: true,
-                                position: 'top-end',
-                                timer: 3000,
-                                showConfirmButton: false
-                            });
-                        }
+        $.ajax({
+            url: "{% url 'add_to_cart' %}",
+            type: "POST",
+            data: {
+                'product_id': productId,
+                'quantity': quantity,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function (response) {
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        toast: true,
+                        timer: 3000,
+                        title: response.message,
+                        position: 'top-end',
+                        showConfirmButton: false
                     });
+
+                    $('#cart-count').text(response.cartItemCount);
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Something went wrong!',
+                    toast: true,
+                    position: 'top-end',
+                    timer: 3000,
+                    showConfirmButton: false
                 });
+            }
+        });
+    });
 
 
-                // view cart
-                function loadCart() {
-                    $.ajax({
-                        url: "{% url 'view_cart' %}",
-                        method: 'GET',
-                        success: function (response) {
-                            if (response.success) {
-                                let cartHtml = '';
-                                let total = 0;
+    // view cart
+    function loadCart() {
+        $.ajax({
+            url: "{% url 'view_cart' %}",
+            method: 'GET',
+            success: function (response) {
+                if (response.success) {
+                    let cartHtml = '';
+                    let total = 0;
 
-                                for (const [id, item] of Object.entries(response.cart)) {
-                                    cartHtml += `
+                    for (const [id, item] of Object.entries(response.cart)) {
+                        cartHtml += `
                         <div class="d-flex justify-content-between border-bottom py-2">
                             <span>${item.name} (x${item.quantity})</span>
                             <span>$${(item.price * item.quantity).toFixed(2)}</span>
                         </div>
                     `;
-                                    total += item.price * item.quantity;
-                                }
+                        total += item.price * item.quantity;
+                    }
 
-                                $('#cartItems').html(cartHtml ||
-                                    '<p class="text-center text-danger">Your cart is empty.</p>');
-                                $('#cartTotal').text('Total: $' + total.toFixed(2));
-                                $('#cartModal').modal('show');
-                            }
-                        },
-                        error: function () {
-                            alert('Failed to load cart. Please try again.');
-                        }
-                    });
+                    $('#cartItems').html(cartHtml ||
+                        '<p class="text-center text-danger">Your cart is empty.</p>');
+                    $('#cartTotal').text('Total: $' + total.toFixed(2));
+                    $('#cartModal').modal('show');
                 }
+            },
+            error: function () {
+                alert('Failed to load cart. Please try again.');
+            }
+        });
+    }
 
-                // Optional: Bind button click
-                $('#viewCartBtn').click(loadCart);
-            </script>
+    // Optional: Bind button click
+    $('#viewCartBtn').click(loadCart);
+</script>
 
 
 
-            {% endblock content %}
+{% endblock content %}
