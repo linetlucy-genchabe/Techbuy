@@ -6,6 +6,13 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'$', views.index, name='index'),
+    
+    # Authentication
+    
+    path('register/', views.register_view, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    
     # admin setup module
     path('setup', views.setup, name='setup'),
     path('products/', views.products, name='products'),
