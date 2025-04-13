@@ -32,21 +32,21 @@
         <div class="container">
            
           <div class="row justify-content-center">
-            <div class="col-xl-5 col-md-8">
-              <form class="bg-white rounded shadow-5-strong p-5" action="{% url 'login' %}" method="POST">
+            <div class="col-xl-5 col-md-8 bg-white rounded shadow-5-strong p-5">
+              <form class="" action="{% url 'login' %}" method="POST">
 
                 {% csrf_token %}
 
                 <!-- Email input -->
-                <div class="form-outline mb-4" data-mdb-input-init>
-                  <input type="text" id="name" name="username" class="form-control" />
-                  <label class="form-label" for="Username"> Username</label>
+                <div class="mb-4">
+                    <label class="form-label text-dark" for="Username"> <strong>Username</strong></label>
+                  <input type="text" id="name" name="username" class="form-control border border-info" required/>
                 </div>
   
                 <!-- Password input -->
-                <div class="form-outline mb-4" data-mdb-input-init>
-                  <input type="password" id="password" name="password" class="form-control" />
-                  <label class="form-label" for="password">Password</label>
+                <div class="mb-4">
+                    <label class="form-label text-dark" for="password"><strong>Password</strong></label>
+                  <input type="password" id="password" name="password" class="form-control border border-info" required />
                 </div>
   
                 <!-- 2 column grid layout for inline styling -->
@@ -70,6 +70,10 @@
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block" data-mdb-ripple-init>Sign in</button>
               </form>
+              <div class="text-center p-2" id="login-btns">
+                <p class="not-member">Not a member? <a href="{% url 'register' %}">Register</a></p>
+
+            </div>
             </div>
           </div>
         </div>
