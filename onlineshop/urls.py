@@ -11,7 +11,7 @@ urlpatterns = [
     
     path('register/', views.register, name='register'),
     path('login/', views.login_view, name='login'),
-    path('logout/', views.logout, name='logout'),
+    path('logout/', views.user_logout, name='logout'),
     
     # admin setup module
     path('setup', views.setup, name='setup'),

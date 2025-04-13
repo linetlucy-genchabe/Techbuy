@@ -31,19 +31,16 @@ def register(request):
         confirm_password = request.POST['confirm_password']
 
         if password != confirm_password:
-            sweetify.error(request, 'Error', text='Passwords do not match.', persistent='OK')
+            
+            sweetify.toast(request, 'Passwords do not match!', icon='error', position='top-end', timer=3000)
             return redirect('register')
 
         if User.objects.filter(username=username).exists():
-            sweetify.error(request, 'Error', text='Username already taken.', persistent='OK')
+            sweetify.toast(request, 'Username already taken!', icon='error', position='top-end', timer=3000)
             return redirect('register')
-
         user = User.objects.create_user(username=username, email=email, password=password)
-        # UserProfile will be automatically created via signals
-
-        sweetify.success(request, 'Success', text='Registration successful! Please log in.', timer=3000)
+        sweetify.toast(request, 'Registartion succesful. Kindly Login!', icon='success', position='top-end', timer=3000)
         return redirect('login')
-
     return render(request, 'authentication/register.html')
 
 
@@ -64,6 +61,12 @@ def login_view(request):
             return redirect('login')  
 
     return render(request, 'authentication/login.html')
+
+
+# Logout
+def user_logout(request):
+    logout(request)
+    return redirect('index');
 
 
 def setup(request):
@@ -147,7 +150,6 @@ def add_products(request):
 def single_product(request, product_id):
     product = Products.objects.get(id=product_id)
     current_user = request.user
-    # user = User.objects.get(username=current_user.username)
     return render(request, 'public/product_detail.html', {'product': product,})
 
 

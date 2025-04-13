@@ -25,6 +25,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="" style="color: black;">About</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'products' %}" style="color: black;">Products</a>
                 </li>
@@ -37,6 +38,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'reviews' %}" style="color: black;">Reviews</a>
                 </li>
+                
+                <a href="{% url 'logout' %}" class="btn me-3" id="register-link"><button class="btn btn-style btn-secondary me-lg-3" type="submit">Logout</button></a>
+                {% else %}
+                <div class="d-flex search-header">
+                    <div class="ms-auto">
+                        <a href="{% url 'register' %}" class="btn px-3 me-2" id="login-link"><button class="btn btn-style btn-white me-lg-3" type="submit">Register</button></a>
+                        <a href="{% url 'login' %}" class="btn me-3" id="register-link"><button class="btn btn-style btn-secondary me-lg-3" type="submit">Login</button></a>
+              
+                      </div>
+                    
+                </div>
+                {% endif %}
 
             </ul>
             
