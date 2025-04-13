@@ -157,3 +157,6 @@ STATICFILES_DIRS = (
 
 # notifications
 SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'
+
+
+

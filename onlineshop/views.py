@@ -55,7 +55,7 @@ def login_view(request):
         if user is not None:
             auth_login(request, user) 
             sweetify.toast(request, f'Welcome back, {user.username}!', icon='success', position='top-end', timer=3000)
-            return redirect('products')  
+            return redirect('index')  
         else:
             sweetify.toast(request, 'Invalid username or password.', icon='error', position='top-end', timer=3000)
             return redirect('login')  
@@ -205,6 +205,9 @@ def add_brands(request):
     brands = Brand.objects.all()
     return render(request, 'setup/brands.html', {'brands': brands})
 
+# to render Permission Denied Error.
+def permission_denied_view(request, exception=None):
+    return render(request, 'public/403.html', status=403)
 
 def contact_us(request):
     
