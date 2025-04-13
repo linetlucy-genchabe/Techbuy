@@ -33,7 +33,7 @@
                 </li>
                 
                 {% if user.is_authenticated %}
-                {% if user.role == "admin" %}
+                {% if user.profile.role == "admin" %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'products' %}" style="color: black;">Products</a>
                 </li>

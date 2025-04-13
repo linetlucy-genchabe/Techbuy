@@ -1,12 +1,11 @@
 from django.shortcuts import get_object_or_404, render,redirect
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from .models import *
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout,login as auth_login 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 import sweetify
 from django.http import JsonResponse
 from django.contrib.auth.models import User  
@@ -68,7 +67,19 @@ def user_logout(request):
     logout(request)
     return redirect('index');
 
+# check admin Role to use when allowing only admin users to access administrative views
+# def is_admin(user):
+#     return user.is_authenticated and user.role == 'admin'
 
+def is_admin(user):
+    return (
+        user.is_authenticated and 
+        hasattr(user, 'profile') and  
+        user.profile.role == 'admin'  
+    )
+
+@login_required
+@user_passes_test(is_admin, login_url='/login/')
 def setup(request):
     product_count = Products.objects.count()
     category_count = Category.objects.count()
@@ -147,6 +158,7 @@ def add_products(request):
     
 
 
+    
 def single_product(request, product_id):
     product = Products.objects.get(id=product_id)
     current_user = request.user
