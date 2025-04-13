@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 import sweetify
 from django.http import JsonResponse
 from django.contrib.auth.models import User  
+from django.core.exceptions import PermissionDenied
 
 
 
@@ -68,8 +69,6 @@ def user_logout(request):
     return redirect('index');
 
 # check admin Role to use when allowing only admin users to access administrative views
-# def is_admin(user):
-#     return user.is_authenticated and user.role == 'admin'
 
 def is_admin(user):
     return (
@@ -77,9 +76,18 @@ def is_admin(user):
         hasattr(user, 'profile') and  
         user.profile.role == 'admin'  
     )
+    
+# utility function to enable throwing of forbidden error if user is not admin
+def admin_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not is_admin(request.user):
+            raise PermissionDenied
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
 
 @login_required
-@user_passes_test(is_admin, login_url='/login/')
+@admin_required
 def setup(request):
     product_count = Products.objects.count()
     category_count = Category.objects.count()
