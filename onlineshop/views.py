@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import sweetify
 from django.http import JsonResponse
+from django.contrib.auth.models import User  
 
 
 
@@ -18,6 +19,36 @@ def index(request):
     reviews = Reviews.objects.all
     
     return render(request, 'index.html', {'products':products, 'reviews':reviews},)
+
+
+# Authentication Views
+# Register View
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password != confirm_password:
+            sweetify.error(request, 'Error', text='Passwords do not match.', persistent='OK')
+            return redirect('register')
+
+        if User.objects.filter(username=username).exists():
+            sweetify.error(request, 'Error', text='Username already taken.', persistent='OK')
+            return redirect('register')
+
+        user = User.objects.create_user(username=username, email=email, password=password)
+        # UserProfile will be automatically created via signals
+
+        sweetify.success(request, 'Success', text='Registration successful! Please log in.', timer=3000)
+        return redirect('login')
+
+    return render(request, 'authentication/register.html')
+
+
+# Login
+
 
 def setup(request):
     product_count = Products.objects.count()
