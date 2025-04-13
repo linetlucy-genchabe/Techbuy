@@ -4,6 +4,13 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    ROLE_CHOICES = (
+        ('admin', 'Admin'),
+        ('customer', 'Customer'),
+    )
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='customer')
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
