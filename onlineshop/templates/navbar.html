@@ -33,19 +33,16 @@
                 </li>
                 
                 {% if user.is_authenticated %}
+                {% if user.role == "admin" %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'products' %}" style="color: black;">Products</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'setup' %}" style="color: black;">Set Up</a>
                 </li>
+                {% endif %}
                 <a href="{% url 'logout' %}" class="btn me-3" id="register-link"><button class="btn btn-style btn-secondary me-lg-3" type="submit">Logout</button></a>
 
-                <div class="end">
-                    <button type="button" class="btn btn-secondary" data-mdb-modal-init data-mdb-target="#viewCartBtn">
-                        <i class="fa-solid fa-cart-shopping"></i> view Cart
-                      </button>
-                </div>
                 {% else %}
 
                 <li class="nav-item">
@@ -56,8 +53,14 @@
                 </li>
                 
                 {% endif %}
+                
 
             </ul>
+            <div class="end">
+                <button type="button" class="btn btn-secondary" data-mdb-modal-init data-mdb-target="#viewCartBtn">
+                    <i class="fa-solid fa-cart-shopping"></i> view Cart
+                  </button>
+            </div>
             
             
         </div>
