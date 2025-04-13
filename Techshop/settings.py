@@ -58,7 +58,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'onlineshop.apps.OnlineshopConfig',
-    'bootstrap5',
     'crispy_forms',
     'jazzmin',
     'django.contrib.admin',

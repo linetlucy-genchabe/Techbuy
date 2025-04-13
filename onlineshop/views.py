@@ -5,7 +5,7 @@ from django.urls import reverse
 from .models import *
 from .forms import *
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, logout,login as auth_login 
 from django.contrib.auth.decorators import login_required
 import sweetify
 from django.http import JsonResponse
@@ -48,6 +48,22 @@ def register(request):
 
 
 # Login
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            auth_login(request, user) 
+            sweetify.toast(request, f'Welcome back, {user.username}!', icon='success', position='top-end', timer=3000)
+            return redirect('products')  
+        else:
+            sweetify.toast(request, 'Invalid username or password.', icon='error', position='top-end', timer=3000)
+            return redirect('login')  
+
+    return render(request, 'authentication/login.html')
 
 
 def setup(request):
