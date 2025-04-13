@@ -96,7 +96,8 @@ def setup(request):
     return render(request, 'setup/setup.html', {'product_count':product_count, 'category_count':category_count,'brand_count':brand_count })
 
 
-
+@login_required
+@admin_required
 def products(request):
     
     products = Products.objects.all
@@ -125,7 +126,8 @@ def new_review(request):
         form = AddReviewsForm()
     return render(request, 'add_review.html', {"form": form})
 
-# @login_required
+@login_required
+@admin_required
 def add_products(request):
     categories = Category.objects.all()
     brands = Brand.objects.all()
@@ -164,9 +166,7 @@ def add_products(request):
     })
     
     
-
-
-    
+ 
 def single_product(request, product_id):
     product = Products.objects.get(id=product_id)
     current_user = request.user
@@ -174,7 +174,8 @@ def single_product(request, product_id):
 
 
 
-
+@login_required
+@admin_required
 def add_categories(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -190,6 +191,8 @@ def add_categories(request):
 
 
 # Brands additions
+@login_required
+@admin_required
 def add_brands(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -201,8 +204,6 @@ def add_brands(request):
 
     brands = Brand.objects.all()
     return render(request, 'setup/brands.html', {'brands': brands})
-
-
 
 
 def contact_us(request):
