@@ -3,9 +3,20 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+from django.conf.urls import handler403
 
+
+
+handler403 = 'onlineshop.views.permission_denied_view'
 urlpatterns = [
     url(r'$', views.index, name='index'),
+    
+    # Authentication
+    
+    path('register/', views.register, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.user_logout, name='logout'),
+    
     # admin setup module
     path('setup', views.setup, name='setup'),
     path('products/', views.products, name='products'),
@@ -27,7 +38,7 @@ urlpatterns = [
     # view cart
     path('view-cart/', views.view_cart, name='view_cart'),
 
-
+    
     ]
 
 if settings.DEBUG:

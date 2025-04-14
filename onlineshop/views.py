@@ -1,14 +1,15 @@
 from django.shortcuts import get_object_or_404, render,redirect
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from .models import *
 from .forms import *
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, logout,login as auth_login 
+from django.contrib.auth.decorators import login_required, user_passes_test
 import sweetify
 from django.http import JsonResponse
+from django.contrib.auth.models import User  
+from django.core.exceptions import PermissionDenied
 
 
 
@@ -19,6 +20,74 @@ def index(request):
     
     return render(request, 'index.html', {'products':products, 'reviews':reviews},)
 
+
+# Authentication Views
+# Register View
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password != confirm_password:
+            
+            sweetify.toast(request, 'Passwords do not match!', icon='error', position='top-end', timer=3000)
+            return redirect('register')
+
+        if User.objects.filter(username=username).exists():
+            sweetify.toast(request, 'Username already taken!', icon='error', position='top-end', timer=3000)
+            return redirect('register')
+        user = User.objects.create_user(username=username, email=email, password=password)
+        sweetify.toast(request, 'Registartion succesful. Kindly Login!', icon='success', position='top-end', timer=3000)
+        return redirect('login')
+    return render(request, 'authentication/register.html')
+
+
+# Login
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            auth_login(request, user) 
+            sweetify.toast(request, f'Welcome back, {user.username}!', icon='success', position='top-end', timer=3000)
+            return redirect('index')  
+        else:
+            sweetify.toast(request, 'Invalid username or password.', icon='error', position='top-end', timer=3000)
+            return redirect('login')  
+
+    return render(request, 'authentication/login.html')
+
+
+# Logout
+def user_logout(request):
+    logout(request)
+    return redirect('index');
+
+# check admin Role to use when allowing only admin users to access administrative views
+
+def is_admin(user):
+    return (
+        user.is_authenticated and 
+        hasattr(user, 'profile') and  
+        user.profile.role == 'admin'  
+    )
+    
+# utility function to enable throwing of forbidden error if user is not admin
+def admin_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not is_admin(request.user):
+            raise PermissionDenied
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+
+@login_required
+@admin_required
 def setup(request):
     product_count = Products.objects.count()
     category_count = Category.objects.count()
@@ -27,7 +96,8 @@ def setup(request):
     return render(request, 'setup/setup.html', {'product_count':product_count, 'category_count':category_count,'brand_count':brand_count })
 
 
-
+@login_required
+@admin_required
 def products(request):
     
     products = Products.objects.all
@@ -56,7 +126,8 @@ def new_review(request):
         form = AddReviewsForm()
     return render(request, 'add_review.html', {"form": form})
 
-# @login_required
+@login_required
+@admin_required
 def add_products(request):
     categories = Category.objects.all()
     brands = Brand.objects.all()
@@ -95,17 +166,16 @@ def add_products(request):
     })
     
     
-
-
+ 
 def single_product(request, product_id):
     product = Products.objects.get(id=product_id)
     current_user = request.user
-    # user = User.objects.get(username=current_user.username)
     return render(request, 'public/product_detail.html', {'product': product,})
 
 
 
-
+@login_required
+@admin_required
 def add_categories(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -121,6 +191,8 @@ def add_categories(request):
 
 
 # Brands additions
+@login_required
+@admin_required
 def add_brands(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -133,8 +205,9 @@ def add_brands(request):
     brands = Brand.objects.all()
     return render(request, 'setup/brands.html', {'brands': brands})
 
-
-
+# to render Permission Denied Error.
+def permission_denied_view(request, exception=None):
+    return render(request, 'public/403.html', status=403)
 
 def contact_us(request):
     

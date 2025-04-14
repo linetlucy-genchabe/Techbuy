@@ -26,26 +26,44 @@
                     <a class="nav-link" href="" style="color: black;">About</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'reviews' %}" style="color: black;">Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact_us' %}" style="color: black;">Contact</a>
+                </li>
+                
+                {% if user.is_authenticated %}
+                {% if user.profile.role == "admin" %}
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'products' %}" style="color: black;">Products</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'setup' %}" style="color: black;">Set Up</a>
                 </li>
+                {% endif %}
+                <a href="{% url 'logout' %}" class="mt-1" id="register-link"><button class="btn btn-secondary me-3" type="submit">Logout</button></a>
+
+                {% else %}
+
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'contact_us' %}" style="color: black;">Contact</a>
+                    <a class="nav-link" href="{% url 'register' %}"><button class="btn btn-white me-lg-3" type="submit">Register</button></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'reviews' %}" style="color: black;">Reviews</a>
+                    <a class="nav-link" href="{% url 'login' %}"><button class="btn btn-secondary me-lg-3" type="submit">Login</button></a>
                 </li>
+                
+                {% endif %}
+                
 
             </ul>
+            <div class="end">
+                <button type="button" class="btn btn-secondary" data-mdb-modal-init data-mdb-target="#viewCartBtn">
+                    <i class="fa-solid fa-cart-shopping"></i> view Cart
+                  </button>
+            </div>
             
             
         </div>
-        <div class="end">
-            <button type="button" class="btn btn-secondary" data-mdb-modal-init data-mdb-target="#viewCartBtn">
-                <i class="fa-solid fa-cart-shopping"></i> view Cart
-              </button>
-        </div>
+        
     </div>
 </nav>

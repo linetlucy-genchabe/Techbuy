@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
 
 
+
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     description=models.TextField()
@@ -18,23 +19,24 @@ class Category(models.Model):
         self.save()
 
 class Profile(models.Model):
+    ROLE_CHOICES = (
+        ('admin', 'Admin'),
+        ('customer', 'Customer'),
+    )
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
-   
-    # description = models.TextField(blank=True)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='customer')  
 
     def save_profile(self):
         self.save()
-        
+
     def delete_profile(self):
         self.delete()
 
     def __str__(self):
         return str(self.user)
-    
-    # def __str__(self):
-    #     return f"{self.user}, {self.bio}, {self.photo}"
-    
+
     class Meta:
         verbose_name = 'Profile'
         verbose_name_plural = 'Profiles'
