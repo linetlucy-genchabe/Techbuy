@@ -53,6 +53,10 @@ DATABASES['default'].update(db_from_env)
 
 ALLOWED_HOSTS = []
 
+# SESSION MANAGEMENT
+SESSION_COOKIE_AGE = 600  
+SESSION_SAVE_EVERY_REQUEST =True
+
 
 # Application definition
 
@@ -77,6 +81,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # session
+    'Techshop.middleware.session_management.SessionTimeoutMiddleware',
 ]
 
 ROOT_URLCONF = 'Techshop.urls'
