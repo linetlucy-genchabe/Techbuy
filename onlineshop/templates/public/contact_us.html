@@ -1,67 +1,64 @@
+
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="container-fluid contact">
-    <section>
-        <div class="container py-5 contact">
-            <div class="row d-flex justify-content-center align-items-center">
-                <div class="col">
-                    <div class="card my-4 shadow-3 ">
-                        <div class="row g-0">
-                            <div class="col-xl-6 d-xl-block bg-image">
-                                <img src="{% static 'images/contact2.png' %}" class="img-fluid" />
-                                <div class="mask" style="background-color: rgba(0, 0, 0, 0.6)">
-                                    <div class=" justify-content-center align-items-center h-100">
-                                        <div class=" text-center" style="margin-top: 220px;">
-                                            <i class="fas fa-truck text-white fa-3x"></i>
-                                            <p class="text-white title-style">We Do delivery</p>
-                                            <p class="text-white mb-0"></p>
 
-                                            <figure class="text-center mb-0">
-                                                <blockquote class="blockquote text-white">
-                                                    <p class="pb-3">
-                                                        <i class="fas fa-quote-left fa-xs" style="color: #efe4b7;"></i>
-                                                        <span class="lead font-italic">Everything at your
-                                                            doorstep.</span>
-                                                        <i class="fas fa-quote-right fa-xs" style="color: #efe4b7;"></i>
-                                                    </p>
-                                                </blockquote>
-                                            </figure>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6">
-                                <div class="card-body p-md-5 contact-details">
-                                    <h3 class="mb-4 text-uppercase">Where to find us...</h3>
-                                    <div class="row">
-                                        <div class="col-md-12 mb-4">
-                                            <h4>Mailing Address</h4>
-                                            <p>123 Anywhere St..,Any City, State, Country +254</p>
-                                        </div>
-                                    </div>
+<div id="contact" class="contact-area section-padding">
+	<div class="container">										
+		<div class="section-title text-center">
+			<h1>Get in Touch</h1>
+			<p></p>
 
-                                    <div class="row">
-                                        <div class="col-md-12 mb-4">
-                                            <h4>Email Address</h4>
-                                            <p>techbuy254@gmail.com</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12 mb-4">
-                                            <h4>Phone Number</h4>
-                                            <p>+254 723987838, +254</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
+		</div>					
+		<div class="row">
+			<div class="col-lg-7">	
+				<div class="contact">
+					<form class="form" name="enq" method="post" action="" onsubmit="return validation();">
+						<div class="row">
+							<div class="form-group col-md-6 mb-3">
+								<input type="text" name="name" class="form-control" placeholder="Name" required="required">
+							</div>
+							<div class="form-group col-md-6 mb-3">
+								<input type="email" name="email" class="form-control" placeholder="Email" required="required">
+							</div>
+							<div class="form-group col-md-12 mb-3">
+								<input type="text" name="subject" class="form-control" placeholder="Subject" required="required">
+							</div>
+							<div class="form-group col-md-12 mb-3">
+								<textarea rows="6" name="message" class="form-control" placeholder="Your Message" required="required"></textarea>
+							</div>
+							<div class="col-md-12 text-center mb-4">
+								<button type="submit" value="Send message" name="submit" id="submitButton" class="btn btn-contact-bg" title="Submit Your Message!">Send Message</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div><!--- END COL --> 
+			<div class="col-lg-5">
+				<div class="single_address">
+					<i class="fa-solid fa-location-dot"></i>
+					<h4>Our Address</h4>
+					<p>3481 New Site, Nairobi, Kenya</p>
+				</div>
+				<div class="single_address">
+					<i class="fa fa-envelope"></i>
+					<h4>Send your message</h4>
+					<p>techbuy@gmail.com</p>
+				</div>
+				<div class="single_address">
+					<i class="fa fa-phone"></i>
+					<h4>Call us on</h4>
+					<p>(+254) 723 987 838 or <span>(+254) 740 923 610</span></p>
+					<p></p>
+				</div>
+				<div class="single_address">
+					
+					<i class="fa-solid fa-clock"></i>
+					<h4>Work Time</h4>
+					<p>Mon - Fri: 08.00 - 16.00. <br>Sat: 10.00 - 14.00</p>
+				</div>					
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock content %}
