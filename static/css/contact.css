@@ -15,7 +15,7 @@ body{margin-top:20px;
     
     .contact input {
         background: #fff;
-        border: 1px solid #fff;
+        border: 1px solid #5caad1;
         border-radius: 3px;
         -webkit-box-shadow: none;
         box-shadow: none;
@@ -24,7 +24,6 @@ body{margin-top:20px;
         height: 60px;
         padding: 10px;
         width: 100%;
-        font-family: 'poppins', sans-serif;
         padding-left: 30px;
         -webkit-transition: all 0.3s ease 0s;
         -o-transition: all 0.3s ease 0s;
@@ -33,7 +32,7 @@ body{margin-top:20px;
     
     .contact textarea {
         background: #fff;
-        border: 1px solid #fff;
+        border: 1px solid #5caad1;
         border-radius: 3px;
         -webkit-box-shadow: none;
         box-shadow: none;
@@ -41,7 +40,6 @@ body{margin-top:20px;
         font-size: 16px;
         padding: 10px;
         width: 100%;
-        font-family: 'poppins', sans-serif;
         padding-left: 30px;
         -webkit-transition: all 0.3s ease 0s;
         -o-transition: all 0.3s ease 0s;
@@ -72,7 +70,6 @@ body{margin-top:20px;
     }
     
     .btn-contact-bg {
-        border-radius: 30px;
         color: #fff;
         outline: medium none !important;
         padding: 15px 27px;
@@ -81,15 +78,15 @@ body{margin-top:20px;
         -o-transition: all 0.3s ease 0s;
         transition: all 0.3s ease 0s;
         background:#5caad1;
-        /* font-family: 'poppins', sans-serif; */
+        
         cursor: pointer;
         width: 100%;
     }
     
     .btn-contact-bg:hover,
     .btn-contact-bg:focus {
-        background: #232434;
-        color: #fff;
+        color: #000;
+        outline: 1px solid #5caad1;
     }
     
     /*START ADDRESS*/
