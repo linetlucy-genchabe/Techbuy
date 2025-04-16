@@ -65,20 +65,22 @@ Setup
           <form id="categoryForm">
           {% csrf_token %}
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add New Category</h5>
+          <h5 class="modal-title" id="exampleModalLabel"><strong>Add New Category</strong></h5>
           <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           
 
-          <div class="form-outline mb-4" data-mdb-input-init>
+          <div class="mb-4 text-start" data-mdb-input-init>
+            <label class="form-label text-dark" for="form12"><strong>Category Name</strong></label>
             <input type="text" class="form-control" name="name" id="categoryName" required>
-            <label class="form-label" for="form12">Category Name</label>
+            
           </div>
 
-          <div class="form-outline mb-4" data-mdb-input-init>
+          <div class="mb-4 text-start">
+            <label class="form-label text-dark" for="description"><strong>Description</strong></label>
             <textarea class="form-control" id="description" name="description" rows="4"></textarea>
-            <label class="form-label" for="description">Description</label>
+            
           </div>
         </div>
         <div class="modal-footer">
