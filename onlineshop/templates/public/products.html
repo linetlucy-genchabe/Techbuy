@@ -31,7 +31,6 @@
 
         </div>
 
-        <!-- ADD PRODUCTS MODAL -->
         <div class="modal top fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
             <div class="modal-dialog modal-lg ">
@@ -39,19 +38,20 @@
                     <form id="productsForm">
                         {% csrf_token %}
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add New Product</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">New Product <small>(s)</small></small></h5>
                             <button type="button" class="btn-close" data-mdb-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="form-outline mb-4" data-mdb-input-init>
+                            <div class="mb-4 text-start">
+                                <label class="form-label text-dark" for="form12"><strong>Product Name</strong></label>
                                 <input type="text" class="form-control" name="name" id="name" required>
-                                <label class="form-label" for="form12">Product Name</label>
                             </div>
 
-                            <div class="form-outline mb-4" data-mdb-input-init>
+                            <div class="mb-4 text-start">
+                                <label class="form-label text-dark" for="form12"><strong>Product Price</strong></label>
                                 <input type="text" class="form-control" name="price" id="price" required>
-                                <label class="form-label" for="form12">Product Price</label>
+                                
                             </div>
 
                             <div class="row mb-4">
@@ -84,18 +84,18 @@
 
                                     </div>
                                 </div>
-
-
-
                             </div>
-                            <div class="input-group mb-4">
+                            <div class="mb-4 text-start">
+                                <label for="formFile" class="form-label text-dark"><strong>Product Image</strong></label>
+
                                 <input type="file" class="form-control" aria-describedby="inputGroupFileAddon04"
                                     aria-label="Upload" id="pic" name="pic" />
                             </div>
 
-                            <div class="form-outline" data-mdb-input-init>
+                            <div class="mb-2 text-start">
+                                <label class="form-label text-dark text-start" for="textAreaExample"><strong>Product Description</strong></label>
                                 <textarea class="form-control" id="description" name="description" rows="4"></textarea>
-                                <label class="form-label" for="textAreaExample">Product Description</label>
+                                
                             </div>
 
 
