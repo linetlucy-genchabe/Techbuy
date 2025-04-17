@@ -156,6 +156,7 @@
 
 
     // view cart
+    $(document).ready(function () {
     function loadCart() {
         $.ajax({
             url: "{% url 'view_cart' %}",
@@ -189,6 +190,7 @@
 
     // Optional: Bind button click
     $('#viewCartBtn').click(loadCart);
+});
 </script>
 
 
