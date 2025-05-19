@@ -10,7 +10,9 @@ import sweetify
 from django.http import JsonResponse
 from django.contrib.auth.models import User  
 from django.core.exceptions import PermissionDenied
-
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.contrib.sessions.models import Session
 
 
 
@@ -215,33 +217,64 @@ def contact_us(request):
 
 
 
+# def add_to_cart(request):
+#     if request.method == 'POST':
+#         product_id = request.POST.get('product_id')
+#         quantity = int(request.POST.get('quantity', 1))
+
+#         product = get_object_or_404(Products, id=product_id)
+
+#         cart = request.session.get('cart', {})
+
+#         if product_id in cart:
+#             cart[product_id]['quantity'] += quantity
+#         else:
+#             cart[product_id] = {
+#                 'name': product.name,
+#                 'price': float(product.price),
+#                 'quantity': quantity,
+#             }
+
+#         request.session['cart'] = cart
+
+#         return JsonResponse({
+#             'success': True,
+#             'message': f"{product.name} added to cart!",
+#             'cartItemCount': sum(item['quantity'] for item in cart.values())
+#         })
+
+#     return JsonResponse({'success': False, 'message': 'Invalid request'})
+@csrf_exempt
 def add_to_cart(request):
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
         quantity = int(request.POST.get('quantity', 1))
+        product = Products.objects.get(id=product_id)
 
-        product = get_object_or_404(Products, id=product_id)
-
-        cart = request.session.get('cart', {})
-
-        if product_id in cart:
-            cart[product_id]['quantity'] += quantity
+        if request.user.is_authenticated:
+            cart, _ = Cart.objects.get_or_create(user=request.user)
         else:
-            cart[product_id] = {
-                'name': product.name,
-                'price': float(product.price),
-                'quantity': quantity,
-            }
+            session_key = request.session.session_key or request.session.save()
+            cart, _ = Cart.objects.get_or_create(session_key=request.session.session_key)
 
-        request.session['cart'] = cart
+        # Clean old items
+        # cart.delete_old_items()
+
+        item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+        if not created:
+            item.quantity += quantity
+        else:
+            item.quantity = quantity
+        item.save()
 
         return JsonResponse({
             'success': True,
             'message': f"{product.name} added to cart!",
-            'cartItemCount': sum(item['quantity'] for item in cart.values())
+            'cartItemCount': cart.items.count(),
         })
 
     return JsonResponse({'success': False, 'message': 'Invalid request'})
+
 
 
 
