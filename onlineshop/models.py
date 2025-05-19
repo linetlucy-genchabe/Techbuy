@@ -115,3 +115,37 @@ class Reviews(models.Model):
     def get_allreviews(cls):
         reviews = cls.objects.all()
         return reviews
+    
+    
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart', null=True, blank=True)
+    session_key = models.CharField(max_length=40, null=True, blank=True)  #Not Logged in  users
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        if self.user:
+            return f"{self.user.username}'s Cart"
+        return f"Session {self.session_key} Cart"
+
+    def get_total_price(self):
+        return sum(item.get_total_price() for item in self.items.all())
+    
+    # can Implement functionality to delete items after aperiod of time
+    
+    # def delete_old_items(self):
+    #     expiration = timezone.now() - timedelta(days=14)
+    #     self.items.filter(added_at__lt=expiration).delete()
+    
+    
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name}"
+
+    def get_total_price(self):
+        return self.product.price * self.quantity   
