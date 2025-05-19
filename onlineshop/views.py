@@ -246,6 +246,11 @@ def add_to_cart(request):
 
 
 def view_cart(request):
+
+    if 'cart' not in request.session:
+        request.session['cart'] = {}
+        request.session.modified = True
+
     cart = request.session.get('cart', {})
     return JsonResponse({
         'success': True,
@@ -255,7 +260,21 @@ def view_cart(request):
     })
 
 
-
+def order_summary(request):
+    cart = request.session.get('cart', {})
+    
+    total_price = sum(item['price'] * item['quantity'] for item in cart.values())
+    cart_items = [{
+        'name': item['name'],
+        'quantity': item['quantity'],
+        'price': item['price'],
+        'total': item['price'] * item['quantity']
+    } for item in cart.values()]
+    
+    return render(request, 'public/order.html', {
+        'cart_items': cart_items,
+        'total_price': total_price
+    })
 
 
 
