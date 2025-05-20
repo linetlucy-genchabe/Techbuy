@@ -60,7 +60,7 @@
                             <input type="number" value="1" class="form-control " />
                         </div> -->
                             <div class="form-outline me-1" data-mdb-input-init style="width: 100px;">
-                                <input type="number" id="typeNumber" class="form-control" value="1" min="1" />
+                                <input type="number" id="quantity-{{ product.id }}" class="form-control" value="1" min="1" />
 
                             </div>
                             <div class="cart">
@@ -72,18 +72,18 @@
                                         Cart</button>
                                 </div>
 
-                                <!-- <button class="btn btn-sm btn-success add-to-cart-btn" >
-                                Add to Cart
-                            </button> -->
+                               
                             </div>
-                            <a href="{% url 'order' %}" class="btn  ms-1">
-                                Order Now!
-                                <!-- <button class="btn order-btn ms-1" type="submit">
-                                    Order Now!
-                                    
-                                </button> -->
-                            </a>
+                         
                         </form>
+                        <form method="POST" action="{% url 'checkout_order' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <input type="hidden" name="customer_id" value="{{ request.session.customer_id }}">
+                            <input type="hidden" name="quantity" id="hidden-quantity-input" value="1">
+                            <button type="submit">Order Now!</button>
+                        </form>
+                        {{ request.session.customer_id|default:"No ID" }}
                     </div>
                     <!--Content-->
                 </div>
@@ -196,6 +196,15 @@
     // Optional: Bind button click
     $('#viewCartBtn').click(loadCart);
 });
+</script>
+<script>
+    // Update hidden quantity input before submitting the order form
+    $(document).ready(function () {
+        $('form[action$="{% url "checkout_order" %}"]').submit(function () {
+            const quantity = $('#quantity-{{ product.id }}').val() || 1;
+            $('#hidden-quantity-input').val(quantity);
+        });
+    });
 </script>
 {% if messages %}
     

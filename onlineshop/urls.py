@@ -41,7 +41,7 @@ urlpatterns = [
     path('order/', views.order_summary, name='order'),
 
     path('checkout/', views.checkout_order, name='checkout_order'),
-    path('admin/view-ordered-items/', views.view_ordered_items, name='view_ordered_items'),
+    path('view-ordered-items/', views.view_ordered_items, name='view_ordered_items'),
     ]
 
 if settings.DEBUG:

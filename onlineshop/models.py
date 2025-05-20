@@ -76,6 +76,7 @@ class Products(models.Model):
     
 
 class Customers(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     Name = models.CharField(max_length=255)
     Email = models.EmailField(unique=True, blank=False, null=False)
     Phonenumber = models.CharField(max_length=15,blank=False , null=False)

@@ -17,10 +17,15 @@
         <div class="mt-4">
             <form method="POST" action="{% url 'checkout_order' %}">
                 {% csrf_token %}
-                <input type="hidden" name="product_id" value="{{ cart_items.0.product_id }}">
-                <input type="hidden" name="quantity" value="{{ cart_items.0.quantity }}">
+                {% for item in cart_items %}
+                    <input type="hidden" name="product_id_{{ forloop.counter }}" value="{{ item.product_id }}">
+                    <input type="hidden" name="quantity_{{ forloop.counter }}" value="{{ item.quantity }}">
+                    <input type="hidden" name="customer_id_{{ forloop.counter }}" value="{{ item.customer_id }}">
+                {% endfor %}
+                <input type="hidden" name="count" value="{{ cart_items|length }}">
                 <button class="btn btn-success" type="submit">Checkout</button>
             </form>
+            
         </div>
     {% else %}
         <p class="text-danger">Your cart is empty.</p>
