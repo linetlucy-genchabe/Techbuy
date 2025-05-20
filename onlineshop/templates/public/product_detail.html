@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% load custom_filters %}
 {% block content %}
 <!-- <div class="cart">
@@ -7,6 +8,7 @@
 
 </div> -->
 <div class="container-fluid">
+    
 
     <main class="mt-5 pt-4">
         <div class="container mt-5">
@@ -195,7 +197,22 @@
     $('#viewCartBtn').click(loadCart);
 });
 </script>
-
+{% if messages %}
+    
+        {% for message in messages %}
+        <script>
+        Swal.fire({
+            icon: 'success',
+            title: '{{ message }}',
+            timer: 3000,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false
+        });
+    </script>
+        {% endfor %}
+    </script>
+{% endif %}
 
 
 {% endblock content %}

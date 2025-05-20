@@ -39,7 +39,8 @@ urlpatterns = [
     path('view-cart/', views.view_cart, name='view_cart'),
      # odder now
     path('order/', views.order_summary, name='order'),
-
+    
+    path('checkout/', views.checkout_order, name='checkout_order'),
     
     ]
 
