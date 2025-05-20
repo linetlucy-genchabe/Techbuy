@@ -1,5 +1,7 @@
 from django.db import models
 import datetime as dt
+
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
@@ -90,6 +92,7 @@ class Orders(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customers, on_delete=models.CASCADE)
     quantity = models.IntegerField()
+    created_at = models.DateTimeField(default=timezone.now )
    
     def save_orders(self):
         self.save()

@@ -306,6 +306,8 @@ def checkout_order(request):
         # Redirect back to the product detail page
         return redirect('product_detail', product_id=product.id)
 
-
+def view_ordered_items(request):
+    orders = Orders.objects.select_related('product', 'customer')
+    return render(request, 'ordered_items.html', {'orders': orders})
 
 
