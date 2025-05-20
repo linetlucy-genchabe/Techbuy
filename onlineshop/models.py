@@ -89,14 +89,27 @@ class Orders(models.Model):
     Totalprice = models.DecimalField(max_digits=10, decimal_places=2)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customers, on_delete=models.CASCADE)
-
+    quantity = models.IntegerField()
+   
     def save_orders(self):
         self.save()
     
     def delete_orders(self):
         self.delete()
 
-        
+class Cart (models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customers, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+    def save_cart(self):
+        self.save()
+    
+    def delete_cart(self):
+        self.delete()
+
 class Reviews(models.Model):
     
     Comment = models.TextField(max_length=1000)
