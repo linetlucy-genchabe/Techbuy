@@ -276,7 +276,35 @@ def order_summary(request):
         'total_price': total_price
     })
 
+def checkout_order(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        quantity = int(request.POST.get('quantity', 1))
+        product = get_object_or_404(Products, id=product_id)
+        customer = get_object_or_404(Customers, user=request.user)
+        total_price = product.price * quantity
 
+        # Save to Orders
+        Orders.objects.create(
+            Totalprice=total_price,
+            product=product,
+            customer=customer,
+            quantity=quantity
+        )
+
+        # Add to Cart DB
+        Cart.objects.create(
+            product=product,
+            customer=customer,
+            quantity=quantity,
+            price=product.price
+        )
+
+        # Add success message
+        messages.success(request, "Order placed successfully!")
+
+        # Redirect back to the product detail page
+        return redirect('product_detail', product_id=product.id)
 
 
 
