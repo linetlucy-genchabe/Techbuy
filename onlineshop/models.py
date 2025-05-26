@@ -1,5 +1,7 @@
 from django.db import models
 import datetime as dt
+
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
@@ -74,6 +76,7 @@ class Products(models.Model):
     
 
 class Customers(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     Name = models.CharField(max_length=255)
     Email = models.EmailField(unique=True, blank=False, null=False)
     Phonenumber = models.CharField(max_length=15,blank=False , null=False)
@@ -89,14 +92,28 @@ class Orders(models.Model):
     Totalprice = models.DecimalField(max_digits=10, decimal_places=2)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customers, on_delete=models.CASCADE)
-
+    quantity = models.IntegerField()
+    created_at = models.DateTimeField(default=timezone.now )
+   
     def save_orders(self):
         self.save()
     
     def delete_orders(self):
         self.delete()
 
-        
+class Cart (models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customers, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+    def save_cart(self):
+        self.save()
+    
+    def delete_cart(self):
+        self.delete()
+
 class Reviews(models.Model):
     
     Comment = models.TextField(max_length=1000)

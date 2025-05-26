@@ -40,7 +40,8 @@ urlpatterns = [
      # odder now
     path('order/', views.order_summary, name='order'),
 
-    
+    path('checkout/', views.checkout_order, name='checkout_order'),
+    path('view-ordered-items/', views.view_ordered_items, name='view_ordered_items'),
     ]
 
 if settings.DEBUG:

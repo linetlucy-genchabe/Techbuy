@@ -4,6 +4,7 @@ from django.urls import reverse
 from .models import *
 from .forms import *
 from django.contrib import messages
+from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.contrib.auth import authenticate, logout,login as auth_login 
 from django.contrib.auth.decorators import login_required, user_passes_test
 import sweetify
@@ -56,6 +57,14 @@ def login_view(request):
 
         if user is not None:
             auth_login(request, user) 
+            
+            # Set customer_id in session, assuming user has related customer
+            try:
+                request.session['customer_id'] = user.customer.id
+            except AttributeError:
+                # Handle if user has no related customer object
+                request.session['customer_id'] = None
+
             sweetify.toast(request, f'Welcome back, {user.username}!', icon='success', position='top-end', timer=3000)
             return redirect('index')  
         else:
@@ -264,8 +273,18 @@ def add_to_cart(request):
         if not created:
             item.quantity += quantity
         else:
+
+            cart[product_id] = {
+                'name': product.name,
+                'price': float(product.price),
+                'quantity': quantity,
+                'product_id': product.id,
+            }
+
+        request.session['cart'] = cart
             item.quantity = quantity
         item.save()
+
 
         return JsonResponse({
             'success': True,
@@ -293,24 +312,78 @@ def view_cart(request):
     })
 
 
+
+
 def order_summary(request):
     cart = request.session.get('cart', {})
-    
+
     total_price = sum(item['price'] * item['quantity'] for item in cart.values())
+
     cart_items = [{
-        'name': item['name'],
-        'quantity': item['quantity'],
-        'price': item['price'],
-        'total': item['price'] * item['quantity']
+        'name': item.get('name'),
+        'quantity': item.get('quantity'),
+        'price': item.get('price'),
+        'product_id': item.get('product_id'),  # Use .get() to avoid KeyError
+        'total': item.get('price') * item.get('quantity') if item.get('price') and item.get('quantity') else 0
     } for item in cart.values()]
-    
+
     return render(request, 'public/order.html', {
         'cart_items': cart_items,
         'total_price': total_price
     })
 
 
+def checkout_order(request):
+    if request.method == 'POST':
+        print("POST data:", request.POST)
+        count = int(request.POST.get('count', 0))
+        if count == 0:
+            return HttpResponseBadRequest("Missing data.")
 
+        for i in range(1, count + 1):
+            product_id = request.POST.get(f'product_id_{i}')
+            customer_id = request.POST.get(f'customer_id_{i}')
+            quantity = request.POST.get(f'quantity_{i}')
 
+            print(f"product_id={product_id}, customer_id={customer_id}, quantity={quantity}")
+
+            if not all([product_id, customer_id, quantity]):
+                return HttpResponseBadRequest("Missing data in item {}".format(i))
+
+            try:
+                product = Products.objects.get(id=int(product_id))
+                customer = Customers.objects.get(id=int(customer_id))
+                quantity = int(quantity)
+            except (Products.DoesNotExist, Customers.DoesNotExist, ValueError):
+                return HttpResponseBadRequest("Invalid product or customer for item {}".format(i))
+
+            total = product.price * quantity
+
+            # Save order
+            Orders.objects.create(
+                product=product,
+                customer=customer,
+                quantity=quantity,
+                Totalprice=total,
+            )
+
+            # Optional: Save to cart model
+            Cart.objects.create(
+                product=product,
+                customer=customer,
+                quantity=quantity,
+                price=product.price,
+            )
+
+        # Optionally clear the cart
+        request.session['cart'] = {}
+
+        return redirect('product_detail')  
+   
+@login_required
+@admin_required
+def view_ordered_items(request):
+    orders = Orders.objects.select_related('product', 'customer')
+    return render(request, 'public/ordered_items.html', {'orders': orders})
 
 
