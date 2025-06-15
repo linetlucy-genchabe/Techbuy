@@ -455,3 +455,55 @@ def view_ordered_items(request):
     return render(request, 'public/ordered_items.html', {'orders': orders})
 
 
+
+
+# UPDATE CART FEATURE
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt  # Only for testing if CSRF isn't working
+import json
+
+@require_POST
+def update_cart_item(request):
+    try:
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+        quantity = data.get('quantity')
+
+        if not product_id:
+            return JsonResponse({'success': False, 'message': 'Product ID missing'})
+
+        # Get the cart (based on user or session)
+        if request.user.is_authenticated:
+            cart = Cart.objects.filter(user=request.user).first()
+        else:
+            session_key = request.session.session_key
+            if not session_key:
+                return JsonResponse({'success': False, 'message': 'No session'})
+            cart = Cart.objects.filter(session_key=session_key, user=None).first()
+
+        if not cart:
+            return JsonResponse({'success': False, 'message': 'Cart not found'})
+
+        cart_item = cart.get_items().filter(product__id=product_id).first()
+        if not cart_item:
+            return JsonResponse({'success': False, 'message': 'Item not found in cart'})
+
+        if quantity == 0:
+            cart_item.delete()
+        else:
+            cart_item.quantity = quantity
+            cart_item.save()
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Item updated' if quantity else 'Item removed',
+            'new_total': str(cart.total_price()),
+            'itemCount': cart.item_count()
+        })
+
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
+
+
