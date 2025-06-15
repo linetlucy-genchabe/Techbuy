@@ -339,18 +339,44 @@ def add_to_cart(request):
 
 
 
+# def view_cart(request):
+
+#     if 'cart' not in request.session:
+#         request.session['cart'] = {}
+#         request.session.modified = True
+
+#     cart = request.session.get('cart', {})
+#     return JsonResponse({
+#         'success': True,
+#         'cart': cart,
+#         'cartItemCount': sum(item['quantity'] for item in cart.values()),
+#         'totalPrice': sum(item['price'] * item['quantity'] for item in cart.values())
+#     })
+
 def view_cart(request):
-
-    if 'cart' not in request.session:
-        request.session['cart'] = {}
-        request.session.modified = True
-
-    cart = request.session.get('cart', {})
+    if request.user.is_authenticated:
+        cart = Cart.objects.filter(user=request.user).first()
+    else:
+        session_key = request.session.session_key
+        cart = Cart.objects.filter(session_key=session_key, user=None).first() if session_key else None
+    
+    if not cart:
+        return JsonResponse({'success': False, 'message': 'Cart is empty'})
+    
+    items = [{
+        'product_id': item.product.id,
+        'name': item.product.name,
+        'price': str(item.product.price),
+        'quantity': item.quantity,
+        'total': str(item.total_price()),
+        'pic': item.product.pic.url if item.product.pic else None 
+    } for item in cart.get_items()]
+    
     return JsonResponse({
         'success': True,
-        'cart': cart,
-        'cartItemCount': sum(item['quantity'] for item in cart.values()),
-        'totalPrice': sum(item['price'] * item['quantity'] for item in cart.values())
+        'items': items,
+        'total': str(cart.total_price()),
+        'itemCount': cart.item_count()
     })
 
 
