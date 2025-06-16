@@ -250,7 +250,7 @@
                             </div>
                         </td>
                         <td class="align-middle item-total">
-                            <span class="fw-bold text-success"><i class="fas fa-money-bill me-1"></i>${item.total}</span>
+                            <span class="fw-bold text-success"><i class="fas fa-money-bill me-1"></i>${item.formatted_total}</span>
                         </td>
                         <td class="align-middle">
                             <button class="btn btn-outline-danger btn-sm remove-item" data-product-id="${item.product_id}" data-mdb-toggle="tooltip" title="Remove item">
@@ -277,7 +277,7 @@
                             <div class="col-md-6 text-end">
                                 <h4 class="mb-0 text-success">
                                     <i class="fas fa-money-bill me-1"></i>
-                                    <span id="grandTotal">${data.total}</span>
+                                    <span id="grandTotal">${data.formatted_total}</span>
                                 </h4>
                                 <small class="text-muted">Grand Total</small>
                             </div>

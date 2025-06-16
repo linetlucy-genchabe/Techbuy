@@ -299,63 +299,8 @@ def add_to_cart(request):
     })
     
     
-# @csrf_exempt
-# def add_to_cart(request):
-#     if request.method == 'POST':
-#         product_id = request.POST.get('product_id')
-#         quantity = int(request.POST.get('quantity', 1))
-#         product = Products.objects.get(id=product_id)
-
-#         if request.user.is_authenticated:
-#             cart, _ = Cart.objects.get_or_create(user=request.user)
-#         else:
-#             session_key = request.session.session_key or request.session.save()
-#             cart, _ = Cart.objects.get_or_create(session_key=request.session.session_key)
-
-#         # Clean old items
-#         # cart.delete_old_items()
-
-#         item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-#         if not created:
-#             item.quantity += quantity
-#         else:
-
-#             cart[product_id] = {
-#                 'name': product.name,
-#                 'price': float(product.price),
-#                 'quantity': quantity,
-#                 'product_id': product.id,
-#             }
-
-#         request.session['cart'] = cart
-#         item.quantity = quantity
-#         item.save()
 
 
-#         return JsonResponse({
-#             'success': True,
-#             'message': f"{product.name} added to cart!",
-#             'cartItemCount': cart.items.count(),
-#         })
-
-#     return JsonResponse({'success': False, 'message': 'Invalid request'})
-
-
-
-
-# def view_cart(request):
-
-#     if 'cart' not in request.session:
-#         request.session['cart'] = {}
-#         request.session.modified = True
-
-#     cart = request.session.get('cart', {})
-#     return JsonResponse({
-#         'success': True,
-#         'cart': cart,
-#         'cartItemCount': sum(item['quantity'] for item in cart.values()),
-#         'totalPrice': sum(item['price'] * item['quantity'] for item in cart.values())
-#     })
 
 def view_cart(request):
     if request.user.is_authenticated:
@@ -371,8 +316,10 @@ def view_cart(request):
         'product_id': item.product.id,
         'name': item.product.name,
         'price': str(item.product.price),
+        # 'formatted_price': f"Ksh {item.product.price():,.2f}",
         'quantity': item.quantity,
         'total': str(item.total_price()),
+        'formatted_total': f"Ksh {item.total_price():,.2f}",
         'pic': item.product.pic.url if item.product.pic else None 
     } for item in cart.get_items()]
     
@@ -380,6 +327,8 @@ def view_cart(request):
         'success': True,
         'items': items,
         'total': str(cart.total_price()),
+        # 'formatted_price': f"Ksh {cart.product.price():,.2f}",
+        'formatted_total': f"Ksh {cart.total_price():,.2f}",
         'itemCount': cart.item_count()
     })
 
