@@ -236,7 +236,7 @@
                             </div>
                         </td>
                         <td class="align-middle">
-                            <span class="fw-bold text-primary">$${item.price}</span>
+                            <span class="fw-bold text-primary"><i class="fas fa-money-bill me-1"></i>${item.price}</span>
                         </td>
                         <td class="align-middle">
                             <div class="input-group" style="width: 140px;">
@@ -250,7 +250,7 @@
                             </div>
                         </td>
                         <td class="align-middle item-total">
-                            <span class="fw-bold text-success">$${item.total}</span>
+                            <span class="fw-bold text-success"><i class="fas fa-money-bill me-1"></i>${item.total}</span>
                         </td>
                         <td class="align-middle">
                             <button class="btn btn-outline-danger btn-sm remove-item" data-product-id="${item.product_id}" data-mdb-toggle="tooltip" title="Remove item">
@@ -276,7 +276,7 @@
                             </div>
                             <div class="col-md-6 text-end">
                                 <h4 class="mb-0 text-success">
-                                    <i class="fas fa-dollar-sign me-1"></i>
+                                    <i class="fas fa-money-bill me-1"></i>
                                     <span id="grandTotal">${data.total}</span>
                                 </h4>
                                 <small class="text-muted">Grand Total</small>
@@ -366,7 +366,6 @@
                 });
             });
     
-            // Remove item buttons
             document.querySelectorAll('.remove-item').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const productId = this.dataset.productId;
@@ -377,7 +376,6 @@
             });
         }
     
-        // MDB-styled confirmation dialog
         function showConfirmationDialog(message, onConfirm) {
             if (typeof mdb !== 'undefined' && mdb.Modal) {
                 const confirmHtml = `
@@ -407,13 +405,11 @@
                 document.getElementById('confirmBtn').addEventListener('click', () => {
                     onConfirm();
                     confirmModal.hide();
-                    // Remove from DOM after hiding
                     setTimeout(() => document.getElementById('confirmModal').remove(), 300);
                 });
                 
                 confirmModal.show();
             } else {
-                // Fallback to browser confirm
                 if (confirm(message)) {
                     onConfirm();
                 }
@@ -473,7 +469,6 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Animate row removal
                     const row = document.querySelector(`tr[data-product-id="${productId}"]`);
                     row.style.transition = 'opacity 0.3s ease';
                     row.style.opacity = '0';
@@ -481,10 +476,8 @@
                     setTimeout(() => {
                         row.remove();
                         
-                        // Update grand total
                         document.getElementById('grandTotal').textContent = data.new_total;
                         
-                        // Check if cart is empty
                         const remainingRows = document.querySelectorAll('tbody tr').length;
                         if (remainingRows === 0) {
                             displayEmptyCart('Your cart is now empty');
@@ -503,63 +496,7 @@
         }
     
         // Checkout button handler
-        checkoutBtn.addEventListener('click', function() {
-            window.location.href = '/checkout/';
-        });
-    
-        // MDB Toast notifications
-        function showMDBToast(message, type = 'info') {
-            const toastColors = {
-                success: 'bg-success',
-                error: 'bg-danger',
-                warning: 'bg-warning',
-                info: 'bg-info'
-            };
-            
-            const toastIcons = {
-                success: 'fas fa-check-circle',
-                error: 'fas fa-exclamation-circle',
-                warning: 'fas fa-exclamation-triangle',
-                info: 'fas fa-info-circle'
-            };
-    
-            const toastHtml = `
-                <div class="toast ${toastColors[type]} text-white" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-body d-flex align-items-center">
-                        <i class="${toastIcons[type]} me-2"></i>
-                        ${message}
-                        <button type="button" class="btn-close btn-close-white ms-auto" data-mdb-dismiss="toast"></button>
-                    </div>
-                </div>
-            `;
-    
-            // Create toast container if it doesn't exist
-            let toastContainer = document.getElementById('toast-container');
-            if (!toastContainer) {
-                toastContainer = document.createElement('div');
-                toastContainer.id = 'toast-container';
-                toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
-                toastContainer.style.zIndex = '9999';
-                document.body.appendChild(toastContainer);
-            }
-    
-            // Add toast to container
-            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
-            const toastElement = toastContainer.lastElementChild;
-    
-            // Initialize and show toast
-            if (typeof mdb !== 'undefined' && mdb.Toast) {
-                const toast = new mdb.Toast(toastElement);
-                toast.show();
-            } else {
-                // Fallback: show and auto-hide
-                toastElement.classList.add('show');
-                setTimeout(() => {
-                    toastElement.classList.remove('show');
-                    setTimeout(() => toastElement.remove(), 300);
-                }, 3000);
-            }
-        }
+       
     
         // Utility function to get CSRF token
         function getCookie(name) {

@@ -8,15 +8,19 @@ from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.contrib.auth import authenticate, logout,login as auth_login 
 from django.contrib.auth.decorators import login_required, user_passes_test
 import sweetify
-from django.http import JsonResponse
+# from django.http import JsonResponse
 from django.contrib.auth.models import User  
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+# from django.http import JsonResponse
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 from datetime import timedelta
 from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+# from django.views.decorators.http import require_POST
+# from django.views.decorators.csrf import csrf_exempt  # Only for testing if CSRF isn't working
+import json
 
 
 
@@ -458,19 +462,14 @@ def view_ordered_items(request):
 
 
 # UPDATE CART FEATURE
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt  # Only for testing if CSRF isn't working
-import json
-
-@require_POST
 def update_cart_item(request):
     try:
+        import json
         data = json.loads(request.body)
         product_id = data.get('product_id')
         quantity = data.get('quantity')
 
-        if not product_id:
+        if product_id is None:
             return JsonResponse({'success': False, 'message': 'Product ID missing'})
 
         # Get the cart (based on user or session)
@@ -491,19 +490,64 @@ def update_cart_item(request):
 
         if quantity == 0:
             cart_item.delete()
+            item_total = '0.00'
         else:
             cart_item.quantity = quantity
             cart_item.save()
+            item_total = str(cart_item.total_price())  # Assuming total_price is a method on the cart item
 
         return JsonResponse({
             'success': True,
             'message': 'Item updated' if quantity else 'Item removed',
+            'item_total': item_total,                     # ✅ Include this
             'new_total': str(cart.total_price()),
             'itemCount': cart.item_count()
         })
 
     except Exception as e:
         return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
+# @require_POST
+# def update_cart_item(request):
+#     try:
+#         data = json.loads(request.body)
+#         product_id = data.get('product_id')
+#         quantity = data.get('quantity')
+
+#         if not product_id:
+#             return JsonResponse({'success': False, 'message': 'Product ID missing'})
+
+#         # Get the cart (based on user or session)
+#         if request.user.is_authenticated:
+#             cart = Cart.objects.filter(user=request.user).first()
+#         else:
+#             session_key = request.session.session_key
+#             if not session_key:
+#                 return JsonResponse({'success': False, 'message': 'No session'})
+#             cart = Cart.objects.filter(session_key=session_key, user=None).first()
+
+#         if not cart:
+#             return JsonResponse({'success': False, 'message': 'Cart not found'})
+
+#         cart_item = cart.get_items().filter(product__id=product_id).first()
+#         if not cart_item:
+#             return JsonResponse({'success': False, 'message': 'Item not found in cart'})
+
+#         if quantity == 0:
+#             cart_item.delete()
+#         else:
+#             cart_item.quantity = quantity
+#             cart_item.save()
+
+#         return JsonResponse({
+#             'success': True,
+#             'message': 'Item updated' if quantity else 'Item removed',
+#             'new_total': str(cart.total_price()),
+#             'itemCount': cart.item_count()
+#         })
+
+#     except Exception as e:
+#         return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
 
 
 
