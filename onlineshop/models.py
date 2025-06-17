@@ -91,7 +91,7 @@ class Customers(models.Model):
 class Orders(models.Model):
     Totalprice = models.DecimalField(max_digits=10, decimal_places=2)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customers, on_delete=models.CASCADE)
+    user = models.ForeignKey(Customers, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     created_at = models.DateTimeField(default=timezone.now )
    
@@ -103,7 +103,7 @@ class Orders(models.Model):
 
 class Cart (models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customers, on_delete=models.CASCADE)
+    user = models.ForeignKey(Customers, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
 

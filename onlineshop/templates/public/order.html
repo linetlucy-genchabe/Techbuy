@@ -20,7 +20,7 @@
                 {% for item in cart_items %}
                     <input type="hidden" name="product_id_{{ forloop.counter }}" value="{{ item.product_id }}">
                     <input type="hidden" name="quantity_{{ forloop.counter }}" value="{{ item.quantity }}">
-                    <input type="hidden" name="customer_id_{{ forloop.counter }}" value="{{ item.customer_id }}">
+                    <input type="hidden" name="user_id_{{ forloop.counter }}" value="{{ item.user }}">
                 {% endfor %}
                 <input type="hidden" name="count" value="{{ cart_items|length }}">
                 <button class="btn btn-success" type="submit">Checkout</button>

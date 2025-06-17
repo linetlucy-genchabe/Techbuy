@@ -76,14 +76,23 @@
                             </div>
                          
                         </form>
-                        <form method="POST" action="{% url 'checkout_order' %}">
+                        <!-- <form method="POST" action="{% url 'checkout_order' %}">
                             {% csrf_token %}
                             <input type="hidden" name="product_id" value="{{ product.id }}">
                             <input type="hidden" name="customer_id" value="{{ request.session.customer_id }}">
                             <input type="hidden" name="quantity" id="hidden-quantity-input" value="1">
                             <button type="submit">Order Now!</button>
+                        </form> -->
+                        <form method="POST" action="{% url 'checkout_order' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id_1" value="{{ product.id }}">
+                            <input type="hidden" name="customer_id_1" value="{{ request.session.customer_id }}">
+                            <input type="hidden" name="quantity_1" id="hidden-quantity-input-{{ product.id }}" value="1">
+                            <input type="hidden" name="count" value="1">
+                        
+                            <button class="btn btn-outline-primary ms-1" type="submit">Order Now!</button>
                         </form>
-                        {{ request.session.customer_id|default:"No ID" }}
+                        {{ request.session.user.id|default:"No ID" }}
                     </div>
                     <!--Content-->
                 </div>
@@ -198,11 +207,11 @@
 });
 </script>
 <script>
-    // Update hidden quantity input before submitting the order form
     $(document).ready(function () {
         $('form[action$="{% url "checkout_order" %}"]').submit(function () {
-            const quantity = $('#quantity-{{ product.id }}').val() || 1;
-            $('#hidden-quantity-input').val(quantity);
+            const productId = "{{ product.id }}";  // Ensure product.id is available in this context
+            const quantity = $('#quantity-' + productId).val() || 1;
+            $('#hidden-quantity-input-' + productId).val(quantity);
         });
     });
 </script>

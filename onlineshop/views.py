@@ -223,7 +223,7 @@ def contact_us(request):
     return render(request, 'public/contact_us.html')
 
 
-
+@login_required
 def add_to_cart(request):
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
@@ -254,7 +254,7 @@ def add_to_cart(request):
     return JsonResponse({'success': False, 'message': 'Invalid request'})
 
 
-
+@login_required
 def view_cart(request):
 
     if 'cart' not in request.session:
@@ -271,7 +271,7 @@ def view_cart(request):
 
 
 
-
+@login_required
 def order_summary(request):
     cart = request.session.get('cart', {})
 
@@ -290,7 +290,8 @@ def order_summary(request):
         'total_price': total_price
     })
 
-
+@login_required
+@admin_required
 def checkout_order(request):
     if request.method == 'POST':
         print("POST data:", request.POST)
@@ -300,17 +301,17 @@ def checkout_order(request):
 
         for i in range(1, count + 1):
             product_id = request.POST.get(f'product_id_{i}')
-            customer_id = request.POST.get(f'customer_id_{i}')
+            user=request.user.id
+            # user_id = request.POST.get(f'user_id_{i}')
             quantity = request.POST.get(f'quantity_{i}')
 
-            print(f"product_id={product_id}, customer_id={customer_id}, quantity={quantity}")
-
-            if not all([product_id, customer_id, quantity]):
+            if not all([product_id, user, quantity]):
                 return HttpResponseBadRequest("Missing data in item {}".format(i))
 
             try:
                 product = Products.objects.get(id=int(product_id))
-                customer = Customers.objects.get(id=int(customer_id))
+                user = Customers.objects.get(id=user)
+                print(user)
                 quantity = int(quantity)
             except (Products.DoesNotExist, Customers.DoesNotExist, ValueError):
                 return HttpResponseBadRequest("Invalid product or customer for item {}".format(i))
@@ -320,7 +321,7 @@ def checkout_order(request):
             # Save order
             Orders.objects.create(
                 product=product,
-                customer=customer,
+                user=user,
                 quantity=quantity,
                 Totalprice=total,
             )
@@ -328,7 +329,7 @@ def checkout_order(request):
             # Optional: Save to cart model
             Cart.objects.create(
                 product=product,
-                customer=customer,
+                user=user,
                 quantity=quantity,
                 price=product.price,
             )
@@ -341,7 +342,7 @@ def checkout_order(request):
 @login_required
 @admin_required
 def view_ordered_items(request):
-    orders = Orders.objects.select_related('product', 'customer')
+    orders = Orders.objects.select_related('product', 'user')
     return render(request, 'public/ordered_items.html', {'orders': orders})
 
 
