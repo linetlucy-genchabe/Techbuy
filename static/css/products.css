@@ -64,15 +64,16 @@
 }
 
 .add-to-cart{
-  background-color: #a16a3a;
+  /* background-color: #a16a3a; */
   color: #ffffff;
   font-weight: 700;
   height: 6.5vh;
 }
-.add-to-cart:hover{
+
+/* .add-to-cart:hover{
   background-color: #a16a3a;
   font-weight: 700;
-}
+} */
 
 .wishlist-icon{
   color: #a16a3a;
