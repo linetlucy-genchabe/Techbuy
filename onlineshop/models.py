@@ -57,18 +57,51 @@ class Products(models.Model):
     product_brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
     stock = models.PositiveIntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)
-
     
+    
+    discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    discount_start = models.DateTimeField(null=True, blank=True)
+    discount_end = models.DateTimeField(null=True, blank=True)
+
     def save_products(self):
         self.save()
     
     def delete_products(self):
         self.delete()
-        
+
     @classmethod
     def get_allproducts(cls):
-        products = cls.objects.all()
-        return products
+        return cls.objects.all()
+
+    
+    def is_discount_active(self):
+        now = timezone.now()
+        return (
+            self.discount_price is not None and
+            self.discount_start is not None and
+            self.discount_end is not None and
+            self.discount_start <= now <= self.discount_end
+        )
+
+    @property
+    def discount_percentage(self):
+        if self.discount_price:
+            return int(100 - (self.discount_price / self.price * 100))
+        return 0
+
+    
+    # def save_products(self):
+    #     self.save()
+    
+    # def delete_products(self):
+    #     self.delete()
+        
+    # @classmethod
+    # def get_allproducts(cls):
+    #     products = cls.objects.all()
+    #     return products
+    
+
     
 # class ProductImage(models.Model):
 #     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="images")

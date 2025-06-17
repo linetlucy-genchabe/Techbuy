@@ -27,8 +27,15 @@ import json
 def index(request):
     products = Products.objects.all
     reviews = Reviews.objects.all
+    # FOR DISCOUNTS
+    now = timezone.now()
+    discounted_products = Products.objects.filter(
+        discount_price__isnull=False,
+        discount_start__lte=now,
+        discount_end__gte=now
+    )
     
-    return render(request, 'index.html', {'products':products, 'reviews':reviews},)
+    return render(request, 'index.html', {'products':products, 'reviews':reviews, 'discounted_products': discounted_products},)
 
 
 # Authentication Views

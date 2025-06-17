@@ -120,6 +120,9 @@
           {% endfor %}
         </div>
       </section>
+
+   
+
       <!--Section: Content-->
 
       <!-- Pagination -->
@@ -141,6 +144,25 @@
 
     </div>
   </main>
+
+
+     {% comment %} DISCOUNTED PRODUCTS WRAPER {% endcomment %}
+  <h2>🔥 Hot Deals</h2>
+     {% if discounted_products %}
+     <section class="discount-wrapper">
+         <h2>🔥 Hot Deals</h2>
+         <div class="discount-grid">
+             {% for product in discounted_products %}
+             <div class="product-card">
+                 <img src="{{ product.pic.url }}" alt="{{ product.name }}">
+                 <h3>{{ product.name }}</h3>
+                 <p><del>Ksh {{ product.price }}</del> <strong>Ksh {{ product.discount_price }}</strong></p>
+                 <span class="badge">Save {{ product.discount_percentage }}%</span>
+             </div>
+             {% endfor %}
+         </div>
+     </section>
+     {% endif %}
  
 
   <main class="my-5">
