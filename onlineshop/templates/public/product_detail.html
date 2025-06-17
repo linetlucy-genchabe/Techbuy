@@ -63,6 +63,7 @@
                                 <input type="number" id="quantity-{{ product.id }}" class="form-control" value="1" min="1" />
 
                             </div>
+                            
                             <div class="cart">
                                 <div class="d-grid gap-2">
                                     <button class="btn btn-primary add-to-cart" type="button" data-mdb-ripple-init
@@ -71,9 +72,10 @@
                                         to
                                         Cart</button>
                                 </div>
-
-                               
                             </div>
+                            <div class="cart">
+                            <a href="{% url 'manage_discount' product.id %}" class='btn btn-outline-primary'>Manage Discount</a>
+                        </div>
                          
                         </form>
                         <form method="POST" action="{% url 'checkout_order' %}">

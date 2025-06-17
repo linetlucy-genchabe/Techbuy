@@ -41,6 +41,11 @@ urlpatterns = [
     # UPDATE CART
     path('update-cart-item/', views.update_cart_item, name='update_cart_item'),
     
+    # UPDATE DISCOUNT ON PRODUCTS
+    
+    path('manage-discount/<int:product_id>/', views.manage_discount, name='manage_discount'),
+
+    
      # odder now
     path('order/', views.order_summary, name='order'),
 
