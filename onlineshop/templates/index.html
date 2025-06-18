@@ -159,7 +159,7 @@
             {% for product in flash_products %}
               <div class="flash-card">
                 <div class="flash-card-image">
-                  <img src="{{ product.pic.url }}" alt="{{ product.name }}" />
+                  <img src="{{ product.pic.url }}" alt="{{ product.name }}" class="home-images"/>
                   <div class="flash-discount">-{{ product.discount_percentage }}%</div>
                   <button class="flash-wishlist">♡</button>
                 </div>
@@ -179,7 +179,11 @@
                     </div>
                     <span class="flash-rating-text">(88)</span>
                   </div>
-                  <button class="flash-add-btn">Add To Cart</button>
+                  {% comment %} <button class="flash-add-btn">Add To Cart</button> {% endcomment %}
+                  <button class="btn btn-primary flash-add-btn" type="button" data-mdb-ripple-init data-product-id="{{ product.id }}">
+                    <i class="fa-solid fa-cart-plus fa-1x"></i>
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             {% endfor %}
