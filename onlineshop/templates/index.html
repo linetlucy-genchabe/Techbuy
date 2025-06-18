@@ -156,7 +156,7 @@
                  <img src="{{ product.pic.url }}" alt="{{ product.name }}">
                  <h3>{{ product.name }}</h3>
                  <p><del>Ksh {{ product.price }}</del> <strong>Ksh {{ product.discount_price }}</strong></p>
-                 <span class="badge">Save {{ product.discount_percentage }}%</span>
+                 <span class="badge badge-primary p-2">Save {{ product.discount_percentage }}%</span>
              </div>
              {% endfor %}
          </div>
