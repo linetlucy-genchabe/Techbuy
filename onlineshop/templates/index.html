@@ -145,6 +145,37 @@
     </div>
   </main>
 
+  {% comment %} FLASH SALES {% endcomment %}
+
+<div class="flash-sales">
+  <h2>Flash Sales</h2>
+  
+  {% if sale_ends_at %}
+  <div id="countdown">
+    Ends in:
+    <span id="days"></span>d :
+    <span id="hours"></span>h :
+    <span id="minutes"></span>m :
+    <span id="seconds"></span>s
+  </div>
+  {% endif %}
+
+  <div class="product-carousel">
+    {% for product in flash_products %}
+    <div class="product-card">
+      <img src="{{ product.pic.url }}" alt="{{ product.name }}">
+      <div class="discount-badge">-{{ product.discount_percentage }}%</div>
+      <h4>{{ product.name }}</h4>
+      <p>
+        <span class="discounted">${{ product.discount_price }}</span>
+        <span class="original"><s>${{ product.price }}</s></span>
+      </p>
+      <button>Add to Cart</button>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
 
      {% comment %} DISCOUNTED PRODUCTS WRAPER {% endcomment %}
      {% if discounted_products %}
@@ -256,6 +287,55 @@
 
 
 </script>
+<script>
+  {% if sale_ends_at %}
+  const countdownDate = new Date("{{ sale_ends_at|date:'Y-m-d H:i:s' }}").getTime();
+
+  const countdownFunction = setInterval(function() {
+    const now = new Date().getTime();
+    const distance = countdownDate - now;
+
+    if (distance > 0) {
+      document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+      document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+    } else {
+      clearInterval(countdownFunction);
+      document.getElementById("countdown").innerHTML = "Flash Sale Ended";
+    }
+  }, 1000);
+  {% endif %}
+</script>
+
+
+<style>
+  .product-card {
+    width: 200px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    position: relative;
+    text-align: center;
+  }
+  .discount-badge {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: red;
+    color: white;
+    padding: 2px 5px;
+    font-weight: bold;
+  }
+  .original {
+    color: gray;
+  }
+  .discounted {
+    color: #e60000;
+    font-weight: bold;
+  }
+</style>
+
 
 
 {%endblock%}

@@ -34,8 +34,14 @@ def index(request):
         discount_start__lte=now,
         discount_end__gte=now
     )
+    flash_products = Products.objects.filter(
+        discount_price__isnull=False,
+        discount_start__lte=now,
+        discount_end__gte=now
+    )
     
-    return render(request, 'index.html', {'products':products, 'reviews':reviews, 'discounted_products': discounted_products},)
+    return render(request, 'index.html', {'products':products, 'reviews':reviews, 'discounted_products': discounted_products, 'flash_products': flash_products,
+        'sale_ends_at': flash_products.order_by('-discount_end').first().discount_end if flash_products else None},)
 
 
 # Authentication Views
@@ -486,3 +492,6 @@ def manage_discount(request, product_id):
             return redirect('index')   
 
     return render(request, 'setup/manage_discount.html', {'product': product})
+
+
+
