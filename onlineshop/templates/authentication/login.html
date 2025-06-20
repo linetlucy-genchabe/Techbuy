@@ -1,86 +1,439 @@
-
 {% extends 'base.html' %}
 {% load static %}
 {% load custom_filters %}
 {% block content %}
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+    /* Reset only for login page content */
+    .login-page-wrapper * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Nunito Sans", sans-serif;
+    }
+    
+    .login-page-wrapper {
+    font-family: "Nunito Sans", sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+    
+    .login-page-wrapper .shape {
+      position: absolute;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    
+    .login-page-wrapper .shape-1 {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      top: -100px;
+      right: 100px;
+    }
+    
+    .login-page-wrapper .shape-2 {
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      top: 50%;
+      right: -50px;
+    }
+    
+    .login-page-wrapper .shape-3 {
+      width: 150px;
+      height: 150px;
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      bottom: 100px;
+      right: 200px;
+    }
+    
+    .login-page-wrapper .shape-4 {
+      width: 180px;
+      height: 180px;
+      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      bottom: -50px;
+      right: 50%;
+    }
+    
+    .login-page-wrapper .shape-5 {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      top: 300px;
+      right: 400px;
+    }
+    
+    .login-page-wrapper .shape-6 {
+      width: 250px;
+      height: 250px;
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      bottom: 200px;
+      right: 600px;
+    }
+    
+    .login-page-wrapper .shape-7 {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+      top: 60%;
+      right: 80%;
+    }
+    
+    .login-page-wrapper .container {
+      display: flex;
+      width: 100%;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .login-page-wrapper .left-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+    
+    .login-page-wrapper .right-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+    
+    .login-page-wrapper .login-form {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .login-page-wrapper .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 30px;
+    }
+    
+    .login-page-wrapper .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    
+    .login-page-wrapper .form-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    
+    .login-page-wrapper .google-btn:hover {
+      border-color: #d1d5db;
+      background: #f9fafb;
+    }
+    
+    .login-page-wrapper .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .login-page-wrapper .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.8);
+      transition: all 0.2s ease;
+    }
+    
+    .login-page-wrapper .form-input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+    }
+    
+    .login-page-wrapper .form-input::placeholder {
+      color: #9ca3af;
+    }
+    
+    .login-page-wrapper .password-group {
+      position: relative;
+    }
+    
+    .login-page-wrapper .password-toggle {
+      position: absolute;
+      right: 12px;
+      margin-top: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #6b7280;
+      cursor: pointer;
+      font-size: 23px;
+    }
+    
+    .login-page-wrapper .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      font-size: 14px;
+    }
+    
+    .login-page-wrapper .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #6b7280;
+    }
+    
+    .login-page-wrapper .checkbox {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+    }
+    
+    .login-page-wrapper .forgot-link {
+      color: #667eea;
+      text-decoration: none;
+    }
+    
+    .login-page-wrapper .forgot-link:hover {
+      text-decoration: underline;
+    }
+    
+    .login-page-wrapper .login-btn {
+      width: 100%;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 20px;
+    }
+    
+    .login-page-wrapper .login-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    .login-page-wrapper .signup-link {
+      text-align: center;
+      font-size: 14px;
+      color: #6b7280;
+    }
+    
+    .login-page-wrapper .signup-link a {
+      color: #667eea;
+      text-decoration: none;
+    }
+    
+    .login-page-wrapper .signup-link a:hover {
+      text-decoration: underline;
+    }
+    
+    .login-page-wrapper .hero-text {
+      text-align: center;
+      color: #333;
+    }
+    
+    .login-page-wrapper .hero-title {
+      font-size: 4rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #333 0%, #667eea 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-<!--Main Navigation-->
-<header>
-    <style>
-      #intro {
-        height: 100vh;
+    .login-page-wrapper .shape {
+        position: absolute;
+        border-radius: 50%;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
       }
-  
-      /* Height for devices larger than 576px */
-      @media (min-width: 992px) {
-        #intro {
-          margin-top: -58.59px;
-        }
-      }
-  
       
-    </style>
-  
-  
-    <!-- Background image -->
-    <div id="intro" class="bg-image shadow-2-strong">
-      <div class="mask d-flex align-items-center h-100" style="">
-        <div class="container">
-           
-          <div class="row justify-content-center">
-            <div class="col-xl-5 col-md-8 bg-white rounded shadow-5-strong p-5">
-              <form class="" action="{% url 'login' %}" method="POST">
+      .login-page-wrapper .shape img {
+        width: 60%; 
+        height: 60%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+      
+      /* Individual shape styles */
+      .login-page-wrapper .shape-8 {
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      
+      .login-page-wrapper .shape-9 {
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        left: 20%;
+        top: 10%;
+      }
+      
+      .login-page-wrapper .shape-10 {
+        width: 250px;
+        height: 250px;
+        background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+        bottom: 20px;
+        left: 50px;
+      }
+      
+    
+    @media (max-width: 1024px) {
+      .login-page-wrapper .container {
+        flex-direction: column;
+      }
+    
+      .login-page-wrapper .hero-title {
+        font-size: 3rem;
+      }
+    
+      .login-page-wrapper .shape {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .login-page-wrapper .hero-title {
+        font-size: 2.5rem;
+      }
+    
+      .login-page-wrapper .login-form {
+        padding: 30px 20px;
+      }
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      100% {
+        transform: translateY(-20px) rotate(5deg);
+      }
+    }
+  </style>
 
-                {% csrf_token %}
+  <div class="login-page-wrapper">
+    <!-- Floating geometric shapes -->
+   
+      <div class="shape shape-9">
+        <img src="{% static 'app_images/16.jpg' %}" alt="iphone">
+      </div>
+      <div class="shape shape-10">
+        <img src="{% static 'app_images/keys.jpg' %}" alt="Laptop">
+      </div> 
+    {% comment %} <div class="shape shape-1"></div> {% endcomment %}
+    <div class="shape shape-1">
+        <img src="{% static 'app_images/mac.jpg' %}" alt="laptop">
+      </div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+    <div class="shape shape-5"></div>
+    <div class="shape shape-6"></div>
+    <div class="shape shape-7"></div>
 
-                <!-- Email input -->
-                <div class="mb-4">
-                    <label class="form-label text-dark" for="Username"> <strong>Username</strong></label>
-                  <input type="text" id="name" name="username" class="form-control border border-info" required/>
-                </div>
-  
-                <!-- Password input -->
-                <div class="mb-4">
-                    <label class="form-label text-dark" for="password"><strong>Password</strong></label>
-                  <input type="password" id="password" name="password" class="form-control border border-info" required />
-                </div>
-  
-                <!-- 2 column grid layout for inline styling -->
-                <div class="row mb-4">
-                  <div class="col d-flex justify-content-center">
-                    <!-- Checkbox -->
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
-                      <label class="form-check-label" for="form1Example3">
-                        Remember me
-                      </label>
-                    </div>
-                  </div>
-  
-                  <div class="col text-center">
-                    <!-- Simple link -->
-                    <a href="#!">Forgot password?</a>
-                  </div>
-                </div>
-  
-                <!-- Submit button -->
-                <button type="submit" class="btn btn-primary btn-block" data-mdb-ripple-init>Sign in</button>
-              </form>
-              <div class="text-center p-2" id="login-btns">
-                <p class="not-member">Not a member? <a href="{% url 'register' %}">Register</a></p>
+    <div class="container">
+      <div class="left-section">
+        <div class="login-form">
+          <div class="logo">
+            <img src="{% static 'images/techbuy logo.png' %}" alt="Logo" style="height: 60px;" />
+          </div>
 
+          <h1 class="form-title">Login</h1>
+
+          <form class="" action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="mb-4">
+              <label class="form-label text-dark" for="Username"><strong>Username</strong></label>
+              <input type="text" id="name" name="username" class="form-input" required />
             </div>
+
+            <div class="mb-4 form-group password-group">
+              <label class="form-label text-dark" for="password"><strong>Password</strong></label>
+              <input type="password" id="password" name="password" class="form-input" required />
+              <button type="button" class="password-toggle" onclick="togglePassword()">👁</button>
             </div>
+
+            <div class="form-options">
+              <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="login-btn">Login</button>
+          </form>
+
+          <div class="signup-link">
+            <p class="text-center">
+              Don't have an account? <a href="{% url 'register' %}">Sign up</a>
+            </p>
           </div>
         </div>
       </div>
+
+      <div class="right-section">
+        <div class="hero-text">
+          <h2 class="hero-title">Join the<br />Digital<br />Revolution</h2>
+          <p class="hero-subtitle">Connect with technology enthusiasts worldwide</p>
+        </div>
+      </div>
     </div>
-    <!-- Background image -->
-  </header>
-  
-  
- 
+  </div>
 
-
-
-  {% endblock content %}
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById('password')
+      const toggleBtn = document.querySelector('.password-toggle')
+    
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text'
+        toggleBtn.textContent = '🙈'
+      } else {
+        passwordInput.type = 'password'
+        toggleBtn.textContent = '👁'
+      }
+    }
+    
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      const shapes = document.querySelectorAll('.login-page-wrapper .shape')
+    
+      shapes.forEach((shape, index) => {
+        shape.style.animation = `float ${3 + index * 0.5}s ease-in-out infinite alternate`
+      })
+    })
+  </script>
+{% endblock %}

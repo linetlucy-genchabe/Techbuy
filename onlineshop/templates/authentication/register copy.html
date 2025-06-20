@@ -1,0 +1,443 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block content %}
+
+<style>
+    /* Reset only for register page content */
+    .register-page-wrapper * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .register-page-wrapper {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    /* Floating electronic device icons */
+    .register-page-wrapper .device-icon {
+        position: absolute;
+        z-index: 1;
+        opacity: 0.1;
+        color: white;
+        font-size: 60px;
+        animation: float 4s ease-in-out infinite alternate;
+    }
+
+    .register-page-wrapper .device-1 {
+        top: 10%;
+        right: 15%;
+        animation-delay: 0s;
+    }
+
+    .register-page-wrapper .device-2 {
+        top: 25%;
+        right: 5%;
+        animation-delay: 1s;
+    }
+
+    .register-page-wrapper .device-3 {
+        bottom: 30%;
+        right: 20%;
+        animation-delay: 2s;
+    }
+
+    .register-page-wrapper .device-4 {
+        bottom: 15%;
+        right: 8%;
+        animation-delay: 0.5s;
+    }
+
+    .register-page-wrapper .device-5 {
+        top: 40%;
+        right: 30%;
+        animation-delay: 1.5s;
+    }
+
+    .register-page-wrapper .device-6 {
+        bottom: 50%;
+        right: 45%;
+        animation-delay: 2.5s;
+    }
+
+    .register-page-wrapper .device-7 {
+        top: 60%;
+        right: 35%;
+        animation-delay: 3s;
+    }
+
+    .register-page-wrapper .container {
+        display: flex;
+        width: 100%;
+        position: relative;
+        z-index: 10;
+    }
+
+    .register-page-wrapper .left-section {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+    }
+
+    .register-page-wrapper .right-section {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+    }
+
+    .register-page-wrapper .register-form {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .register-page-wrapper .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 30px;
+        justify-content: center;
+    }
+
+    .register-page-wrapper .logo-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .register-page-wrapper .form-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 30px;
+        text-align: center;
+        background: linear-gradient(135deg, #333 0%, #667eea 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .register-page-wrapper .alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border: none;
+        font-size: 14px;
+    }
+
+    .register-page-wrapper .alert-success {
+        background: rgba(34, 197, 94, 0.1);
+        color: #059669;
+        border-left: 4px solid #10b981;
+    }
+
+    .register-page-wrapper .alert-danger {
+        background: rgba(239, 68, 68, 0.1);
+        color: #dc2626;
+        border-left: 4px solid #ef4444;
+    }
+
+    .register-page-wrapper .alert-warning {
+        background: rgba(245, 158, 11, 0.1);
+        color: #d97706;
+        border-left: 4px solid #f59e0b;
+    }
+
+    .register-page-wrapper .alert-info {
+        background: rgba(59, 130, 246, 0.1);
+        color: #2563eb;
+        border-left: 4px solid #3b82f6;
+    }
+
+    .register-page-wrapper .btn-close {
+        background: none;
+        border: none;
+        font-size: 18px;
+        color: currentColor;
+        opacity: 0.7;
+        cursor: pointer;
+        float: right;
+        margin-left: 10px;
+    }
+
+    .register-page-wrapper .form-group {
+        margin-bottom: 24px;
+    }
+
+    .register-page-wrapper .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #374151;
+        font-size: 14px;
+    }
+
+    .register-page-wrapper .form-control {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        font-size: 14px;
+        background: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+
+    .register-page-wrapper .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .register-page-wrapper .form-control:hover {
+        border-color: #d1d5db;
+    }
+
+    .register-page-wrapper .form-text {
+        font-size: 12px;
+        color: #6b7280;
+        margin-top: 4px;
+        display: block;
+    }
+
+    .register-page-wrapper .btn {
+        padding: 14px 24px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        font-family: inherit;
+    }
+
+    .register-page-wrapper .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        margin-bottom: 20px;
+    }
+
+    .register-page-wrapper .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .register-page-wrapper .btn-primary:active {
+        transform: translateY(0);
+    }
+
+    .register-page-wrapper .text-center {
+        text-align: center;
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .register-page-wrapper .text-center a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .register-page-wrapper .text-center a:hover {
+        text-decoration: underline;
+    }
+
+    .register-page-wrapper .hero-text {
+        text-align: center;
+        color: white;
+    }
+
+    .register-page-wrapper .hero-title {
+        font-size: 4rem;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 20px;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .register-page-wrapper .hero-subtitle {
+        font-size: 1.2rem;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.9);
+        margin-top: 20px;
+    }
+
+    /* Animation keyframes */
+    @keyframes float {
+        0% { 
+            transform: translateY(0px) rotate(0deg); 
+            opacity: 0.1;
+        }
+        50% {
+            opacity: 0.2;
+        }
+        100% { 
+            transform: translateY(-30px) rotate(10deg); 
+            opacity: 0.1;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .register-page-wrapper .container {
+            flex-direction: column;
+        }
+        
+        .register-page-wrapper .hero-title {
+            font-size: 3rem;
+        }
+        
+        .register-page-wrapper .device-icon {
+            display: none;
+        }
+        
+        .register-page-wrapper .left-section,
+        .register-page-wrapper .right-section {
+            padding: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .register-page-wrapper .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .register-page-wrapper .register-form {
+            padding: 30px 20px;
+        }
+    }
+</style>
+
+<div class="register-page-wrapper">
+    <!-- Floating electronic device icons -->
+    <div class="device-icon device-1">💻</div> <!-- Laptop -->
+    <div class="device-icon device-2">🖥️</div> <!-- Desktop PC -->
+    <div class="device-icon device-3">🎧</div> <!-- Headphones -->
+    <div class="device-icon device-4">⌨️</div> <!-- Keyboard -->
+    <div class="device-icon device-5">🖱️</div> <!-- Mouse -->
+    <div class="device-icon device-6">📱</div> <!-- Phone -->
+    <div class="device-icon device-7" width="300" height="200">🔊</div> <!-- Speakers -->
+
+    <div class="container">
+        <div class="left-section">
+            <div class="register-form">
+                <div class="logo">
+                    <div class="logo-icon">C</div>
+                </div>
+                
+                <h1 class="form-title">Create Account</h1>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" onclick="this.parentElement.style.display='none'">×</button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="POST" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="username">Username</label>
+                        <input type="text" id="username" name="username" class="form-control" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="form-text text-info">We'll never share your email with anyone else.</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required/>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="confirm_password">Confirm Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" required />
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                    
+                    <p class="text-center">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                </form>
+            </div>
+        </div>
+        
+        <div class="right-section">
+            <div class="hero-text">
+                <h2 class="hero-title">Join the<br>Digital<br>Revolution</h2>
+                <p class="hero-subtitle">Connect with technology enthusiasts worldwide</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const devices = document.querySelectorAll('.register-page-wrapper .device-icon');
+        
+        devices.forEach((device, index) => {
+            const duration = 4 + Math.random() * 3;
+            const delay = Math.random() * 2;
+            device.style.animationDuration = `${duration}s`;
+            device.style.animationDelay = `${delay}s`;
+        });
+
+        const form = document.querySelector('form');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm_password');
+
+        if (confirmPassword) {
+            confirmPassword.addEventListener('blur', function() {
+                if (password.value !== confirmPassword.value) {
+                    confirmPassword.style.borderColor = '#ef4444';
+                } else {
+                    confirmPassword.style.borderColor = '#10b981';
+                }
+            });
+        }
+
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    });
+</script>
+
+{% endblock content %}

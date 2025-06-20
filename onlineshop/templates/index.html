@@ -116,6 +116,8 @@
     {% comment %}FLASH SALES{% endcomment %}
 
     <main>
+      {% if sale_ends_at %}
+      <div class="container">
       <div class="flash-sales">
         <div class="flash-container">
           <!-- Header -->
@@ -125,7 +127,7 @@
               <h2 class="flash-title">Flash Sales</h2>
             </div>
 
-            {% if sale_ends_at %}
+            {% comment %} {% if sale_ends_at %} {% endcomment %}
               <div class="flash-timer">
                 <span class="timer-label">Ends In</span>
                 <div class="timer-box">
@@ -146,13 +148,14 @@
                 </div>
               </div>
               
-            {% endif %}
+            {% comment %} {% endif %} {% endcomment %}
 
             <div class="flash-nav">
               <button class="nav-arrow" onclick="slideProducts('left')">←</button>
               <button class="nav-arrow" onclick="slideProducts('right')">→</button>
             </div>
           </div>
+          {% endif %}
 
           <!-- Products Grid -->
           <div class="flash-products" id="productsGrid">
@@ -190,11 +193,13 @@
           </div>
         </div>
       </div>
+    </div>
     </main>
 
     {% comment %}DISCOUNTED PRODUCTS WRAPER{% endcomment %}
     {% if discounted_products %}
   <section class="discount-wrapper my-5">
+  <div class="container">
     <h2 class="text-center mb-4">🔥 Hot Deals</h2>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -217,6 +222,7 @@
         </div>
       {% endfor %}
     </div>
+  </div>
   </section>
 {% endif %}
 

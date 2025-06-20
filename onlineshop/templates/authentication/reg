@@ -1,0 +1,15 @@
+{% comment %} <form>
+                    <div class="form-group">
+                        <input type="email" class="form-input" placeholder="Email" required>
+                    </div>
+                    
+                    <div class="form-group password-group">
+                        <input type="password" class="form-input" placeholder="Password" id="password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword()">👁</button>
+                    </div>
+                    
+                    <div class="form-options">
+                        {% comment %} <div class="checkbox-group">
+                            <input type="checkbox" class="checkbox" id="remember">
+                            <label for="remember">Keep me logged in</label>
+                        </div> {% endcomment %}
