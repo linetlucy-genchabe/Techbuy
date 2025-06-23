@@ -1,9 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Manage Discount - {{ product.name }}</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div card>
+
+
+
+</div>
+ 
     <h2>Manage Discount for: {{ product.name }}</h2>
 
     <form method="POST">
@@ -25,5 +29,4 @@
 
     <br>
     <a href="{% url 'index' %}">← Back to Home</a>
-</body>
-</html>
+    {% endblock %}
