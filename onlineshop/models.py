@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
+from datetime import timedelta
 
 
 
@@ -56,18 +57,51 @@ class Products(models.Model):
     product_brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
     stock = models.PositiveIntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)
-
     
+    
+    discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    discount_start = models.DateTimeField(null=True, blank=True)
+    discount_end = models.DateTimeField(null=True, blank=True)
+
     def save_products(self):
         self.save()
     
     def delete_products(self):
         self.delete()
-        
+
     @classmethod
     def get_allproducts(cls):
-        products = cls.objects.all()
-        return products
+        return cls.objects.all()
+
+    
+    def is_discount_active(self):
+        now = timezone.now()
+        return (
+            self.discount_price is not None and
+            self.discount_start is not None and
+            self.discount_end is not None and
+            self.discount_start <= now <= self.discount_end
+        )
+
+    @property
+    def discount_percentage(self):
+        if self.discount_price:
+            return int(100 - (self.discount_price / self.price * 100))
+        return 0
+
+    
+    # def save_products(self):
+    #     self.save()
+    
+    # def delete_products(self):
+    #     self.delete()
+        
+    # @classmethod
+    # def get_allproducts(cls):
+    #     products = cls.objects.all()
+    #     return products
+    
+
     
 # class ProductImage(models.Model):
 #     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="images")
@@ -101,18 +135,72 @@ class Orders(models.Model):
     def delete_orders(self):
         self.delete()
 
-class Cart (models.Model):
-    product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    user = models.ForeignKey(Customers, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+# class Cart (models.Model):
+#     product = models.ForeignKey(Products, on_delete=models.CASCADE)
+#     customer = models.ForeignKey(Customers, on_delete=models.CASCADE)
+#     quantity = models.IntegerField()
+#     price = models.DecimalField(max_digits=10, decimal_places=2)
 
 
-    def save_cart(self):
-        self.save()
+#     def save_cart(self):
+#         self.save()
     
-    def delete_cart(self):
-        self.delete()
+#     def delete_cart(self):
+#         self.delete()
+
+# CART CLASS WHICH STORES LOGGEDIN USER FROM USER TABLE AND STORES SESSION KEY FOR GUEST USERS AND CLEARD CART AFTER 
+# 30 DAYS FOR LOGGED IN USER AND 7 DAYS FOR GUEST USERS.
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    session_key = models.CharField(max_length=40, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    expires_at = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        if not self.pk:  
+            if self.user:  
+                self.expires_at = timezone.now() + timedelta(days=30)
+            else:  
+                self.expires_at = timezone.now() + timedelta(days=7)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        if self.user:
+            return f"Cart for {self.user.username}"
+        return f"Anonymous cart ({self.session_key})"
+
+    def get_items(self):
+        return self.items.all()
+
+    def item_count(self):
+        return self.items.count()
+
+    def total_price(self):
+        return sum(item.total_price() for item in self.items.all())
+
+    def clean_expired(self):
+        if timezone.now() > self.expires_at:
+            self.delete()
+            
+     
+     
+    #CART ITEMS    
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    def total_price(self):
+        return self.product.price * self.quantity
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name}"
+
+    class Meta:
+        unique_together = ('cart', 'product')
+
 
 class Reviews(models.Model):
     
@@ -132,3 +220,37 @@ class Reviews(models.Model):
     def get_allreviews(cls):
         reviews = cls.objects.all()
         return reviews
+    
+    
+# class Cart(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart', null=True, blank=True)
+#     session_key = models.CharField(max_length=40, null=True, blank=True)  #Not Logged in  users
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+
+#     def __str__(self):
+#         if self.user:
+#             return f"{self.user.username}'s Cart"
+#         return f"Session {self.session_key} Cart"
+
+#     def get_total_price(self):
+#         return sum(item.get_total_price() for item in self.items.all())
+    
+    # can Implement functionality to delete items after aperiod of time
+    
+    # def delete_old_items(self):
+    #     expiration = timezone.now() - timedelta(days=14)
+    #     self.items.filter(added_at__lt=expiration).delete()
+    
+    
+# class CartItem(models.Model):
+#     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
+#     product = models.ForeignKey(Products, on_delete=models.CASCADE)
+#     quantity = models.PositiveIntegerField(default=1)
+#     added_at = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f"{self.quantity} x {self.product.name}"
+
+#     def get_total_price(self):
+#         return self.product.price * self.quantity   

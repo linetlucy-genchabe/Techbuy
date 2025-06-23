@@ -100,7 +100,7 @@
 
             <!-- Cart Modal -->
 
-            <div class="modal top fade" id="viewCartBtn" tabindex="-1" aria-labelledby="exampleModalLabel"
+            {% comment %} <div class="modal top fade" id="viewCartBtn" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
                 <div class="modal-dialog  ">
                     <div class="modal-content">
@@ -121,7 +121,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> {% endcomment %}
+
+            <!-- Button to trigger modal -->
+
+            
+
         </div>
     </main>
 </div>
@@ -170,41 +175,8 @@
 
 
     // view cart
-    $(document).ready(function () {
-    function loadCart() {
-        $.ajax({
-            url: "{% url 'view_cart' %}",
-            method: 'GET',
-            success: function (response) {
-                if (response.success) {
-                    let cartHtml = '';
-                    let total = 0;
+  
 
-                    for (const [id, item] of Object.entries(response.cart)) {
-                        cartHtml += `
-                        <div class="d-flex justify-content-between border-bottom py-2">
-                            <span>${item.name} (x${item.quantity})</span>
-                            <span>$${(item.price * item.quantity).toFixed(2)}</span>
-                        </div>
-                    `;
-                        total += item.price * item.quantity;
-                    }
-
-                    $('#cartItems').html(cartHtml ||
-                        '<p class="text-center text-danger">Your cart is empty.</p>');
-                    $('#cartTotal').text('Total: $' + total.toFixed(2));
-                    $('#cartModal').modal('show');
-                }
-            },
-            error: function () {
-                alert('Failed to load cart. Please try again.');
-            }
-        });
-    }
-
-    // Optional: Bind button click
-    $('#viewCartBtn').click(loadCart);
-});
 </script>
 <script>
     $(document).ready(function () {

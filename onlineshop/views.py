@@ -8,18 +8,34 @@ from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.contrib.auth import authenticate, logout,login as auth_login 
 from django.contrib.auth.decorators import login_required, user_passes_test
 import sweetify
-from django.http import JsonResponse
+# from django.http import JsonResponse
 from django.contrib.auth.models import User  
 from django.core.exceptions import PermissionDenied
-
+from django.views.decorators.csrf import csrf_exempt
+# from django.http import JsonResponse
+from django.contrib.sessions.models import Session
+from django.utils import timezone
+from datetime import timedelta
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+# from django.views.decorators.http import require_POST
+# from django.views.decorators.csrf import csrf_exempt  # Only for testing if CSRF isn't working
+import json
 
 
 
 def index(request):
     products = Products.objects.all
     reviews = Reviews.objects.all
+    # FOR DISCOUNTS
+    now = timezone.now()
+    discounted_products = Products.objects.filter(
+        discount_price__isnull=False,
+        discount_start__lte=now,
+        discount_end__gte=now
+    )
     
-    return render(request, 'index.html', {'products':products, 'reviews':reviews},)
+    return render(request, 'index.html', {'products':products, 'reviews':reviews, 'discounted_products': discounted_products},)
 
 
 # Authentication Views
@@ -223,50 +239,104 @@ def contact_us(request):
     return render(request, 'public/contact_us.html')
 
 
-@login_required
+
+# def add_to_cart(request):
+#     if request.method == 'POST':
+#         product_id = request.POST.get('product_id')
+#         quantity = int(request.POST.get('quantity', 1))
+
+#         product = get_object_or_404(Products, id=product_id)
+
+#         cart = request.session.get('cart', {})
+
+#         if product_id in cart:
+#             cart[product_id]['quantity'] += quantity
+#         else:
+#             cart[product_id] = {
+#                 'name': product.name,
+#                 'price': float(product.price),
+#                 'quantity': quantity,
+#             }
+
+#         request.session['cart'] = cart
+
+#         return JsonResponse({
+#             'success': True,
+#             'message': f"{product.name} added to cart!",
+#             'cartItemCount': sum(item['quantity'] for item in cart.values())
+#         })
+
+#     return JsonResponse({'success': False, 'message': 'Invalid request'})
+
+
+@require_POST
 def add_to_cart(request):
-    if request.method == 'POST':
-        product_id = request.POST.get('product_id')
-        quantity = int(request.POST.get('quantity', 1))
+    product_id = request.POST.get('product_id')
+    quantity = int(request.POST.get('quantity', 1))
+    
+    try:
+        product = Products.objects.get(id=product_id)
+    except Products.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Product not found'}, status=404)
 
-        product = get_object_or_404(Products, id=product_id)
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user)
+    else:
+        if not request.session.session_key:
+            request.session.create()
+        session_key = request.session.session_key
+        cart, created = Cart.objects.get_or_create(session_key=session_key, user=None)
 
-        cart = request.session.get('cart', {})
+    # Create or update cart item
+    item, created = CartItem.objects.get_or_create(
+        cart=cart,
+        product=product,
+        defaults={'quantity': quantity}
+    )
+    
+    if not created:
+        item.quantity += quantity
+        item.save()
 
-        if product_id in cart:
-            cart[product_id]['quantity'] += quantity
-        else:
-            cart[product_id] = {
-                'name': product.name,
-                'price': float(product.price),
-                'quantity': quantity,
-                'product_id': product.id,
-            }
-
-        request.session['cart'] = cart
-
-        return JsonResponse({
-            'success': True,
-            'message': f"{product.name} added to cart!",
-            'cartItemCount': sum(item['quantity'] for item in cart.values())
-        })
-
-    return JsonResponse({'success': False, 'message': 'Invalid request'})
+    return JsonResponse({
+        'success': True,
+        'message': f"{product.name} added to cart!",
+        'cartItemCount': cart.item_count(),
+        'cartTotal': cart.total_price(),
+    })
+    
+    
 
 
 @login_required
 def view_cart(request):
-
-    if 'cart' not in request.session:
-        request.session['cart'] = {}
-        request.session.modified = True
-
-    cart = request.session.get('cart', {})
+    if request.user.is_authenticated:
+        cart = Cart.objects.filter(user=request.user).first()
+    else:
+        session_key = request.session.session_key
+        cart = Cart.objects.filter(session_key=session_key, user=None).first() if session_key else None
+    
+    if not cart:
+        return JsonResponse({'success': False, 'message': 'Cart is empty'})
+    
+    items = [{
+        'product_id': item.product.id,
+        'name': item.product.name,
+        'price': str(item.product.price),
+        # 'formatted_price': f"Ksh {item.product.price():,.2f}",
+        'quantity': item.quantity,
+        'total': str(item.total_price()),
+        'formatted_total': f"Ksh {item.total_price():,.2f}",
+        'pic': item.product.pic.url if item.product.pic else None 
+    } for item in cart.get_items()]
+    
     return JsonResponse({
         'success': True,
-        'cart': cart,
-        'cartItemCount': sum(item['quantity'] for item in cart.values()),
-        'totalPrice': sum(item['price'] * item['quantity'] for item in cart.values())
+        'items': items,
+        'total': str(cart.total_price()),
+        # 'formatted_price': f"Ksh {cart.product.price():,.2f}",
+        'formatted_total': f"Ksh {cart.total_price():,.2f}",
+        'itemCount': cart.item_count()
     })
 
 
@@ -344,5 +414,97 @@ def checkout_order(request):
 def view_ordered_items(request):
     orders = Orders.objects.select_related('product', 'user')
     return render(request, 'public/ordered_items.html', {'orders': orders})
+
+
+
+
+# UPDATE CART FEATURE
+def update_cart_item(request):
+    try:
+        import json
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+        quantity = data.get('quantity')
+
+        if product_id is None:
+            return JsonResponse({'success': False, 'message': 'Product ID missing'})
+
+        # Get the cart (based on user or session)
+        if request.user.is_authenticated:
+            cart = Cart.objects.filter(user=request.user).first()
+        else:
+            session_key = request.session.session_key
+            if not session_key:
+                return JsonResponse({'success': False, 'message': 'No session'})
+            cart = Cart.objects.filter(session_key=session_key, user=None).first()
+
+        if not cart:
+            return JsonResponse({'success': False, 'message': 'Cart not found'})
+
+        cart_item = cart.get_items().filter(product__id=product_id).first()
+        if not cart_item:
+            return JsonResponse({'success': False, 'message': 'Item not found in cart'})
+
+        if quantity == 0:
+            cart_item.delete()
+            item_total = '0.00'
+        else:
+            cart_item.quantity = quantity
+            cart_item.save()
+            item_total = str(cart_item.total_price())  # Assuming total_price is a method on the cart item
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Item updated' if quantity else 'Item removed',
+            'item_total': item_total,                     # ✅ Include this
+            'new_total': str(cart.total_price()),
+            'itemCount': cart.item_count()
+        })
+
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
+# @require_POST
+# def update_cart_item(request):
+#     try:
+#         data = json.loads(request.body)
+#         product_id = data.get('product_id')
+#         quantity = data.get('quantity')
+
+#         if not product_id:
+#             return JsonResponse({'success': False, 'message': 'Product ID missing'})
+
+#         # Get the cart (based on user or session)
+#         if request.user.is_authenticated:
+#             cart = Cart.objects.filter(user=request.user).first()
+#         else:
+#             session_key = request.session.session_key
+#             if not session_key:
+#                 return JsonResponse({'success': False, 'message': 'No session'})
+#             cart = Cart.objects.filter(session_key=session_key, user=None).first()
+
+#         if not cart:
+#             return JsonResponse({'success': False, 'message': 'Cart not found'})
+
+#         cart_item = cart.get_items().filter(product__id=product_id).first()
+#         if not cart_item:
+#             return JsonResponse({'success': False, 'message': 'Item not found in cart'})
+
+#         if quantity == 0:
+#             cart_item.delete()
+#         else:
+#             cart_item.quantity = quantity
+#             cart_item.save()
+
+#         return JsonResponse({
+#             'success': True,
+#             'message': 'Item updated' if quantity else 'Item removed',
+#             'new_total': str(cart.total_price()),
+#             'itemCount': cart.item_count()
+#         })
+
+#     except Exception as e:
+#         return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
 
 

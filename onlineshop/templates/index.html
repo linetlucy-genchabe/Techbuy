@@ -104,8 +104,13 @@
                   {{product.description|truncatewords:15}}
                 </p>
 
-                <a href="#!" class="btn btn" data-mdb-ripple-init
-                  style="background-color: rgb(95, 53, 4);color: white;">Add To Cart</a>
+                {% comment %} <a href="#!" class="btn btn" data-mdb-ripple-init
+                  style="background-color: rgb(95, 53, 4);color: white;">Add To Cart</a> {% endcomment %}
+                  <button class="btn btn-primary add-to-cart" type="button" data-mdb-ripple-init
+                                        data-product-id="{{ product.id }}"><i class="fa-solid fa-cart-plus fa-1x"></i>
+                                        Add
+                                        to
+                                        Cart</button>
 
               </div>
             </div>
@@ -115,6 +120,9 @@
           {% endfor %}
         </div>
       </section>
+
+   
+
       <!--Section: Content-->
 
       <!-- Pagination -->
@@ -136,6 +144,25 @@
 
     </div>
   </main>
+
+
+     {% comment %} DISCOUNTED PRODUCTS WRAPER {% endcomment %}
+  <h2>🔥 Hot Deals</h2>
+     {% if discounted_products %}
+     <section class="discount-wrapper">
+         <h2>🔥 Hot Deals</h2>
+         <div class="discount-grid">
+             {% for product in discounted_products %}
+             <div class="product-card">
+                 <img src="{{ product.pic.url }}" alt="{{ product.name }}">
+                 <h3>{{ product.name }}</h3>
+                 <p><del>Ksh {{ product.price }}</del> <strong>Ksh {{ product.discount_price }}</strong></p>
+                 <span class="badge">Save {{ product.discount_percentage }}%</span>
+             </div>
+             {% endfor %}
+         </div>
+     </section>
+     {% endif %}
  
 
   <main class="my-5">
@@ -184,6 +211,52 @@
 
 </div>
 </div>
+
+<script>
+  $(document).on('click', '.add-to-cart', function () {
+      const productId = $(this).data('product-id');
+      const quantity = $('#quantity-' + productId).val() || 1;
+
+      $.ajax({
+          url: "{% url 'add_to_cart' %}",
+          type: "POST",
+          data: {
+              'product_id': productId,
+              'quantity': quantity,
+              'csrfmiddlewaretoken': '{{ csrf_token }}',
+          },
+          success: function (response) {
+              if (response.success) {
+                  Swal.fire({
+                      icon: 'success',
+                      toast: true,
+                      timer: 3000,
+                      title: response.message,
+                      position: 'top-end',
+                      showConfirmButton: false
+                  });
+
+                  $('#cart-count').text(response.cartItemCount);
+              }
+          },
+          error: function () {
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'Something went wrong!',
+                  toast: true,
+                  position: 'top-end',
+                  timer: 3000,
+                  showConfirmButton: false
+              });
+          }
+      });
+  });
+
+
+
+
+</script>
 
 
 {%endblock%}

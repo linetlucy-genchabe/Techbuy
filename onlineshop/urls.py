@@ -36,9 +36,14 @@ urlpatterns = [
     # Add to Cart
     path('add-to-cart/', views.add_to_cart, name='add_to_cart'),
     # view cart
+    # path('view-cart/', views.view_cart, name='view_cart'),
     path('view-cart/', views.view_cart, name='view_cart'),
+    # UPDATE CART
+    path('update-cart-item/', views.update_cart_item, name='update_cart_item'),
+    
      # odder now
     path('order/', views.order_summary, name='order'),
+
 
     path('checkout/', views.checkout_order, name='checkout_order'),
     path('view-ordered-items/', views.view_ordered_items, name='view_ordered_items'),
